@@ -431,6 +431,7 @@ function CreateLevel () {
         )
         tiles.placeOnRandomTile(Quinto, assets.tile`myTile1`)
     } else if (level == 2) {
+        NPCMama.destroy()
         tiles.setCurrentTilemap(tilemap`El Pirai`)
         Casa = sprites.create(img`
             ....................e2e22e2e....................
@@ -532,6 +533,7 @@ function CreateLevel () {
             tiles.placeOnRandomTile(Wall_Shooter_DOWN, assets.tile`forestTiles0`)
         }
     } else if (level == 3) {
+        NPCMama.destroy()
         tiles.setCurrentTilemap(tilemap`level4`)
     } else {
     	
@@ -771,10 +773,10 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     if (Machetazo == true) {
         otherSprite.destroy(effects.disintegrate, 700)
         info.changeScoreBy(1)
-        music.magicWand.play()
+        music.playMelody("B C5 C5 - - - - - ", 600)
     } else {
         info.changeLifeBy(-1)
-        music.powerDown.play()
+        music.playMelody("C D D - - - - - ", 400)
         scene.cameraShake(4, 500)
         pause(1000)
     }
@@ -1524,7 +1526,7 @@ Scene_1_Papa_Bien,
 100,
 true
 )
-story.spriteMoveToLocation(Scene_1_Papa_Bien, 89, 110, 20)
+story.spriteMoveToLocation(Scene_1_Papa_Bien, 89, 110, 2)
 animation.runImageAnimation(
 Scene_1_Papa_Bien,
 [img`
@@ -1649,8 +1651,10 @@ animation.stopAnimation(animation.AnimationTypes.All, Scene_1_Corazon)
 pause(1000)
 Scene_1_Corazon.destroy(effects.fire, 700)
 pause(2500)
-story.printText("Te subij AHORINGA al auto!", 40, 89, 2)
+story.printText("Te subij al auto AHORINGA!", 40, 89, 2)
 scene.cameraShake(2, 1000)
+pause(1000)
+animation.stopAnimation(animation.AnimationTypes.All, Scene_1_CamCun)
 story.spriteMoveToLocation(Scene_1_Cambita_Bien, 91, 100, 40)
 animation.runImageAnimation(
 Scene_1_Cambita_Bien,
@@ -1900,18 +1904,168 @@ Scene_1_Papa_Bien,
 100,
 true
 )
-story.spriteMoveToLocation(Scene_1_Papa_Bien, 89, 108, 20)
+story.spriteMoveToLocation(Scene_1_Papa_Bien, 89, 108, 5)
 Scene_1_Papa_Bien.destroy()
 story.spriteMoveToLocation(Scene_1_Auto, 0, 94, 35)
 Scene_1_Auto.destroy()
-animation.stopAnimation(animation.AnimationTypes.All, Scene_1_CamCun)
+pause(1000)
+music.setVolume(255)
 music.spooky.play()
-animation.runMovementAnimation(
+animation.runImageAnimation(
 Scene_1_CamCun,
-animation.animationPresets(animation.shake),
-2000,
-false
+[img`
+    . . . . . . . c c c . . . . . . 
+    . . . . . . c b 5 c . . . . . . 
+    . . . . c c c 5 5 c c c . . . . 
+    . . c c b c 5 5 5 5 c c c c . . 
+    . c b b 5 b 5 5 5 5 b 5 b b c . 
+    . c b 5 5 b b 5 5 b b 5 5 b c . 
+    . . f 5 5 5 b b b b 5 5 5 c . . 
+    . . f f 5 5 5 5 5 5 5 5 f f . . 
+    . . f f f b f e e f b f f f . . 
+    . . f f f 1 f b b f 1 f f f . . 
+    . . . f f b b b b b b f f . . . 
+    . . . e e f e e e e f e e . . . 
+    . . e b c b 1 b b 1 b f b e . . 
+    . . e e f 1 1 1 1 1 1 f e e . . 
+    . . . . c b 1 1 1 1 b c . . . . 
+    . . . . . f f f f f f . . . . . 
+    `,img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . c c . . . . . . . . 
+    . . . . . . c 5 c . . . . . . . 
+    . . . . c c c 5 5 c c c . . . . 
+    . . c c c c 5 5 5 5 c b c c . . 
+    . c b b 5 b 5 5 5 5 b 5 b b c . 
+    . c b 5 5 b b 5 5 b b 5 5 b c . 
+    . . c 5 5 5 b b b b 5 5 5 f . . 
+    . . f f 5 5 5 5 5 5 5 5 f f . . 
+    . . f f f b f e e f b f f f . . 
+    . . f f f 1 f b b f 1 f f f . . 
+    . . . f f b b b b e e e f . . . 
+    . . e b b f e e e e b b e . . . 
+    . . e e f 1 1 b b e b b e . . . 
+    . . . f 1 1 1 1 1 e e c . . . . 
+    . . . . f f f f f f f . . . . . 
+    `,img`
+    . . . . . . c c c . . . . . . . 
+    . . . . . . c 5 b c . . . . . . 
+    . . . . c c c 5 5 c c c . . . . 
+    . . c c c c 5 5 5 5 c b c c . . 
+    . c b b 5 b 5 5 5 5 b 5 b b c . 
+    . c b 5 5 b b 5 5 b b 5 5 b c . 
+    . . c 5 5 5 b b b b 5 5 5 f . . 
+    . . f f 5 5 5 5 5 5 5 5 f f . . 
+    . . f f f b f e e f b f f f . . 
+    . . f f f 1 f b b f 1 f f f . . 
+    . . . f f b b b b b b f f . . . 
+    . . . e e f e e e e f e e . . . 
+    . . e b f b 1 b b 1 b c b e . . 
+    . . e e f 1 1 1 1 1 1 f e e . . 
+    . . . . c b 1 1 1 1 b c . . . . 
+    . . . . . f f f f f f . . . . . 
+    `,img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . c c . . . . . . 
+    . . . . . . . c 5 c . . . . . . 
+    . . . . c c c 5 5 c c c . . . . 
+    . . c c b c 5 5 5 5 c c c c . . 
+    . c b b 5 b 5 5 5 5 b 5 b b c . 
+    . c b 5 5 b b 5 5 b b 5 5 b c . 
+    . . f 5 5 5 b b b b 5 5 5 c . . 
+    . . f f 5 5 5 5 5 5 5 5 f f . . 
+    . . f f f b f e e f b f f f . . 
+    . . f f f 1 f b b f 1 f f f . . 
+    . . . f e e e b b b b f f . . . 
+    . . . e b b e e e e f b b e . . 
+    . . . e b b e b b 1 1 f e e . . 
+    . . . . c e e 1 1 1 1 1 f . . . 
+    . . . . . f f f f f f f . . . . 
+    `],
+100,
+true
 )
+story.spriteMoveToLocation(Scene_1_CamCun, 73, 103, 30)
+animation.runImageAnimation(
+Scene_1_CamCun,
+[img`
+    . . . . . . . c c . . . . . . . 
+    . . . . . . c 5 c . . . . . . . 
+    . . . . c c 5 5 5 c c c . . . . 
+    . . c c c c 5 5 5 5 c b c c . . 
+    . c b b 5 b 5 5 5 5 b 5 b b c . 
+    . c b 5 5 b b 5 5 b b 5 5 b c . 
+    . . c 5 5 5 b b b b 5 5 5 f . . 
+    . . . f 5 5 5 5 5 5 5 5 f f . . 
+    . . . . f e e e f b e e f f . . 
+    . . . . f e b b f 1 b f f f . . 
+    . . . . f b b b b b b f f . . . 
+    . . . . . f e e e e f e e . . . 
+    . . . . . f 5 b b e b b e . . . 
+    . . . . f 5 5 5 5 e b b e . . . 
+    . . . . c b 5 5 5 5 e e . . . . 
+    . . . . . f f f f f f . . . . . 
+    `,img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . c c . . . . . . . 
+    . . . . . . c c 5 c . . . . . . 
+    . . . . c c 5 5 5 c c c . . . . 
+    . . c c c c 5 5 5 5 c b c c . . 
+    . c b b 5 b 5 5 5 5 b 5 b b c . 
+    . c b 5 5 b b 5 5 b b 5 5 b c . 
+    . . c 5 5 5 b b b b 5 5 5 f . . 
+    . . . f 5 5 5 5 5 5 5 5 f f . . 
+    . . . . f e e e f b e e f f . . 
+    . . . . f e b b f 1 b f f f . . 
+    . . . . f b b b b e e f f . . . 
+    . . . . . f e e e b b e f . . . 
+    . . . . f 5 b b e b b e . . . . 
+    . . . . c 5 5 5 5 e e f . . . . 
+    . . . . . f f f f f f . . . . . 
+    `,img`
+    . . . . . . . c c . . . . . . . 
+    . . . . . . c 5 c . . . . . . . 
+    . . . . c c 5 5 5 c c c . . . . 
+    . . c c c c 5 5 5 5 c b c c . . 
+    . c b b 5 b 5 5 5 5 b 5 b b c . 
+    . c b 5 5 b b 5 5 b b 5 5 b c . 
+    . . c 5 5 5 b b b b 5 5 5 f . . 
+    . . . f 5 5 5 5 5 5 5 5 f f . . 
+    . . . . f e e e f b e e f f . . 
+    . . . . f e b b f 1 b f f f . . 
+    . . . . f b b b b b b f f . . . 
+    . . . . . f e e e e f e e . . . 
+    . . . . . f 5 b b e b b e . . . 
+    . . . . f 5 5 5 5 e b b e . . . 
+    . . . . c b 5 5 5 5 e e . . . . 
+    . . . . . f f f f f f . . . . . 
+    `,img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . c c . . . . . . . 
+    . . . . . . c c 5 c . . . . . . 
+    . . . . c c 5 5 5 c c c . . . . 
+    . . c c c c 5 5 5 5 c b c c . . 
+    . c b b 5 b 5 5 5 5 b 5 b b c . 
+    . c b 5 5 b b 5 5 b b 5 5 b c . 
+    . . c 5 5 5 b b b b 5 5 5 f . . 
+    . . . f 5 5 5 5 5 5 5 5 f f . . 
+    . . . . f e e e f b e e f f . . 
+    . . . . f e b b f 1 b f f f . . 
+    . . . . f b b b b b b f f . . . 
+    . . . . . f e e e e e b b e . . 
+    . . . . f 5 5 b b b e b b e . . 
+    . . . . c 5 5 5 5 5 e e e . . . 
+    . . . . . f f f f f f . . . . . 
+    `],
+100,
+true
+)
+pause(400)
+story.spriteMoveToLocation(Scene_1_CamCun, 65, 103, 5)
+animation.stopAnimation(animation.AnimationTypes.All, Scene_1_CamCun)
+music.setVolume(20)
+music.playMelody("A G F F E D C C ", 120)
+music.playMelody("A G F F E D C C ", 120)
 story.cancelAllCutscenes()
 animation.stopAnimation(animation.AnimationTypes.All, Scene_1_Papa_Bien)
 animation.stopAnimation(animation.AnimationTypes.All, Scene_1_Cambita_Bien)
