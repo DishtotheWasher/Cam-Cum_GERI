@@ -1,3 +1,8 @@
+enum ActionKind {
+    Walking,
+    Idle,
+    Jumping
+}
 namespace SpriteKind {
     export const NPC = SpriteKind.create()
     export const NPC1 = SpriteKind.create()
@@ -19,15 +24,6 @@ namespace SpriteKind {
  * NIVEL 1 - Inicio de la aventura en Casa de Cam-Kun
  * 
  * Dialogo con Mama-Kun.
- */
-/**
- * 0-Up
- * 
- * 1-Right
- * 
- * 2-Down
- * 
- * 3-Left
  */
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
@@ -202,13 +198,13 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.NPC1, function (sprite, otherSpr
     game.showLongText("Madre: A ver mijo...Esa pelada no es pa' voj. Te vas a meter en problemas.", DialogLayout.Bottom)
     story.showPlayerChoices("No mamita, estoy yendo a la ventita", "Bah! yo hago lo que quiero puej")
     if (story.checkLastAnswer("No mamita, estoy yendo a la ventita")) {
-        game.showLongText("Madre: Ya, toma quintos, compra unos pancitos hijo..", DialogLayout.Bottom)
+        game.showLongText("Madre: Ya, toma quintos, compra unos pancitos hijito..", DialogLayout.Bottom)
         music.baDing.play()
         info.changeScoreBy(2)
     } else if (story.checkLastAnswer("Bah! yo hago lo que quiero puej")) {
         game.showLongText("Madre: No me hables asi malcriau", DialogLayout.Bottom)
+        scene.cameraShake(3, 1000)
         music.smallCrash.play()
-        scene.cameraShake(5, 1000)
         info.changeLifeBy(-1)
     }
     pause(500)
@@ -310,7 +306,9 @@ function CreateLevel () {
         . . . . c b 1 1 1 1 b c . . . . 
         . . . . . f f f f f f . . . . . 
         `, SpriteKind.Player)
+    Machetazo = true
     if (level == 1) {
+        color.startFade(color.Black, color.originalPalette, 3500)
         tiles.setCurrentTilemap(tilemap`level2`)
         scene.setBackgroundColor(0)
         Quinto = sprites.create(img`
@@ -430,9 +428,11 @@ function CreateLevel () {
         true
         )
         tiles.placeOnRandomTile(Quinto, assets.tile`myTile1`)
+        pause(500)
     } else if (level == 2) {
         NPCMama.destroy()
         tiles.setCurrentTilemap(tilemap`El Pirai`)
+        scene.setBackgroundColor(13)
         Casa = sprites.create(img`
             ....................e2e22e2e....................
             .................222eee22e2e222.................
@@ -483,28 +483,222 @@ function CreateLevel () {
             .....64eee444c66f4e44e44e44e44ee66c444eee46.....
             ......6ccc666c66e4e44e44e44e44ee66c666ccc6......
             `, SpriteKind.Building)
-        Comida = sprites.create(img`
-            . . 2 2 b b b b b . . . . . . . 
-            . 2 b 4 4 4 4 4 4 b . . . . . . 
-            2 2 4 4 4 4 d d 4 4 b . . . . . 
-            2 b 4 4 4 4 4 4 d 4 b . . . . . 
-            2 b 4 4 4 4 4 4 4 d 4 b . . . . 
-            2 b 4 4 4 4 4 4 4 4 4 b . . . . 
-            2 b 4 4 4 4 4 4 4 4 4 e . . . . 
-            2 2 b 4 4 4 4 4 4 4 b e . . . . 
-            . 2 b b b 4 4 4 b b b e . . . . 
-            . . e b b b b b b b e e . . . . 
-            . . . e e b 4 4 b e e e b . . . 
-            . . . . . e e e e e e b d b b . 
-            . . . . . . . . . . . b 1 1 1 b 
-            . . . . . . . . . . . c 1 d d b 
-            . . . . . . . . . . . c 1 b c . 
-            . . . . . . . . . . . . c c . . 
-            `, SpriteKind.Food)
-        for (let index = 0; index < 3; index++) {
+        Vendedor_Derecha_1 = sprites.create(img`
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeebbbee
+            cccccccccccceee555ee
+            bbbfffffbbbcee55515e
+            bfffffaffbbcee54445e
+            bffffffafffcee55555e
+            ffffafffaafceeeeeeee
+            faffaafffffceeeeeeee
+            faaffffefffceeeeeeee
+            fffffffeefdceebbbbee
+            ffeefafeefdce225512e
+            dfe4e1f44fdce222222e
+            dfffe4444fdceeeeeeee
+            ddfeeeeeffdceeeeeeee
+            ddeeee777fdceeebbeee
+            dde44e777fdcee7777ee
+            ddf44f999fdcee7667ee
+            dddffffffddcee7661ee
+            ddddfffddddcee7771ee
+            dddddddddddcee7777ee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            cccccccccccccccccccc
+            bbbbbbbbbbbbbbbbbbbb
+            bbbbbbbbbbbbbbbbbbbb
+            bbbbbbbbbbbbbbbbbbbb
+            `, SpriteKind.NPC)
+        Vendedor_Derecha_1.setPosition(80, 488)
+        Vendedor_Derecha_2 = sprites.create(img`
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            cccccccccccceeeeeeee
+            bbbfffffbbbceeeeeeee
+            bfffffaffbbceeeeeeee
+            bffffffafffbbbbbbbbb
+            ffffafffaafbdddddddb
+            faffaafffffbbbbbbbbb
+            faaffffefffbddddddeb
+            fffffffeefdbbbb15ebb
+            ffeefafeefdbdd4515db
+            dfe4e1f44fdbb51554bb
+            dfffe4444fdbd5545ddb
+            ddfeeeeeffdbbe15bbbb
+            ddeeee666fdbeddddddb
+            dde44e666fdbbbbbbbbb
+            ddf44f111fdbdddddddb
+            dddffffffddbbbbbbbbb
+            ddddfffddddceeeeeeee
+            dddddddddddceeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            cccccccccccccccccccc
+            bbbbbbbbbbbbbbbbbbbb
+            bbbbbbbbbbbbbbbbbbbb
+            bbbbbbbbbbbbbbbbbbbb
+            `, SpriteKind.NPC)
+        Vendedor_Derecha_2.setPosition(80, 535)
+        Vendedor_Derecha_3 = sprites.create(img`
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            cccccccccccceeeeeeee
+            bbbfffffbbbceceef2ee
+            bfffffaffbbcec22212b
+            bffffffafffcebbbbbbb
+            ffffafffaafceeeeeeee
+            faffaafffffceeeeeeee
+            faaffffefffceeeeeeee
+            fffffffeefdce55eeeee
+            ffeefafeefdce5e5eeee
+            dfe4e1f44fdce5ee555e
+            dfffe4444fdceeeeeeee
+            ddfeeeeeffdceeeeeeee
+            ddeeee888fdceeeeeeee
+            dde44e888fdce777eeee
+            ddf44fbbbfdcec7717ee
+            dddffffffddcec77717b
+            ddddfffddddcebbbbbbb
+            dddddddddddceeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            cccccccccccccccccccc
+            bbbbbbbbbbbbbbbbbbbb
+            bbbbbbbbbbbbbbbbbbbb
+            bbbbbbbbbbbbbbbbbbbb
+            `, SpriteKind.NPC)
+        Vendedor_Derecha_3.setPosition(80, 582)
+        Vendedor_Izquierda_1 = sprites.create(img`
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeecccccccccccc
+            eefceececbbbfffffbbb
+            bf1fffcecbbffafffffb
+            bbbbbbbecfffaffffffb
+            eeeeeeeecfaafffaffff
+            eeeeeeeecfffffaaffaf
+            eeeeeeeecfffeffffaaf
+            eeeee99ecdfeefffffff
+            eeee9e9ecdfeefafeeff
+            e999ee9ecdf44f1e4efd
+            eeeeeeeecdf4444efffd
+            eeeeeeeecdffeeeeefdd
+            eeeeeeeecdf888eeeedd
+            eeee444ecdf888e44edd
+            ee41442ecdfcccf44fdd
+            b414442ecddffffffddd
+            bbbbbbbecddddfffdddd
+            eeeeeeeecddddddddddd
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            cccccccccccccccccccc
+            bbbbbbbbbbbbbbbbbbbb
+            bbbbbbbbbbbbbbbbbbbb
+            bbbbbbbbbbbbbbbbbbbb
+            `, SpriteKind.NPC)
+        Vendedor_Izquierda_1.setPosition(128, 488)
+        Vendedor_Izquierda_2 = sprites.create(img`
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eebbbeeeeeeeeeeeeeee
+            ee444eeecccccccccccc
+            e41444eecbbbfffffbbb
+            e45554eecbbffafffffb
+            e44444eecfffaffffffb
+            eeeeeeeecfaafffaffff
+            eeeeeeeecfffffaaffaf
+            eeeeeeeecfffeffffaaf
+            eebbbbeecdfeefffffff
+            e91cc99ecdfeefafeeff
+            e999999ecdf44f1e4efd
+            eeeeeeeecdf4444efffd
+            eeeeeeeecdffeeeeefdd
+            eeebbeeecdf666eeeedd
+            ee3333eecdf666e44edd
+            ee3553eecdf222f44fdd
+            ee1553eecddffffffddd
+            ee1333eecddddfffdddd
+            ee3333eecddddddddddd
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            cccccccccccccccccccc
+            bbbbbbbbbbbbbbbbbbbb
+            bbbbbbbbbbbbbbbbbbbb
+            bbbbbbbbbbbbbbbbbbbb
+            `, SpriteKind.NPC)
+        Vendedor_Izquierda_2.setPosition(128, 535)
+        Vendedor_Izquierda_3 = sprites.create(img`
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeecccccccccccc
+            eeeeeeeecbbbfffffbbb
+            eeeeeeeecbbffafffffb
+            bbbbbbbbbfffaffffffb
+            bdddddddbfaafffaffff
+            bbbbbbbbbfffffaaffaf
+            beddddddbfffeffffaaf
+            bbe51bbbbdfeefffffff
+            bd5154ddbdfeefafeeff
+            bb45515bbdf44f1e4efd
+            bdd5455dbdf4444efffd
+            bbbb51ebbdffeeeeefdd
+            bddddddebdf666eeeedd
+            bbbbbbbbbdf666e44edd
+            bdddddddbdf222f44fdd
+            bbbbbbbbbddffffffddd
+            eeeeeeeecddddfffdddd
+            eeeeeeeecddddddddddd
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            eeeeeeeeeeeeeeeeeeee
+            cccccccccccccccccccc
+            bbbbbbbbbbbbbbbbbbbb
+            bbbbbbbbbbbbbbbbbbbb
+            bbbbbbbbbbbbbbbbbbbb
+            `, SpriteKind.NPC)
+        Vendedor_Izquierda_3.setPosition(128, 582)
+        for (let index = 0; index < 2; index++) {
+            Comida = sprites.create(img`
+                . . . . . . . . . . . e e 
+                . . . . . . . . . . e e e 
+                . . . . . . . 5 4 1 5 e . 
+                . . . . . . 1 5 5 5 5 . . 
+                . . . . . 5 5 1 4 5 1 . . 
+                . . . . 5 5 4 5 5 5 5 . . 
+                . . . 5 1 5 1 5 5 4 . . . 
+                . . 4 5 5 5 5 4 5 . . . . 
+                . . 5 1 4 5 5 5 . . . . . 
+                . . 5 5 5 1 5 . . . . . . 
+                . e 5 4 5 5 . . . . . . . 
+                e e e . . . . . . . . . . 
+                e e . . . . . . . . . . . 
+                `, SpriteKind.Food)
             tiles.placeOnRandomTile(Comida, assets.tile`tilePath5`)
         }
-        Comida.setPosition(26, 12)
         Casa.setPosition(26, 12)
         for (let index = 0; index < 4; index++) {
             Vibora = sprites.create(assets.image`Vibora`, SpriteKind.Enemy)
@@ -540,6 +734,15 @@ function CreateLevel () {
     }
     tiles.placeOnRandomTile(CamKun, sprites.dungeon.collectibleInsignia)
 }
+/**
+ * 0-Up
+ * 
+ * 1-Right
+ * 
+ * 2-Down
+ * 
+ * 3-Left
+ */
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
     CamKun,
@@ -784,15 +987,20 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
 let Wall_Shooter_DOWN: Sprite = null
 let Vibora: Sprite = null
 let Comida: Sprite = null
+let Vendedor_Izquierda_3: Sprite = null
+let Vendedor_Izquierda_2: Sprite = null
+let Vendedor_Izquierda_1: Sprite = null
+let Vendedor_Derecha_3: Sprite = null
+let Vendedor_Derecha_2: Sprite = null
+let Vendedor_Derecha_1: Sprite = null
 let Casa: Sprite = null
 let Sofa: Sprite = null
 let level = 0
 let NPCMama: Sprite = null
-let Machetazo = false
 let Quinto: Sprite = null
-let CamKun: Sprite = null
 let DialogueMode = false
-DialogueMode = true
+let CamKun: Sprite = null
+let Machetazo = false
 scene.setBackgroundImage(img`
     9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
     99999999999999999999999999999999999999999999999999999999999999999999999999999999999999991111ddd99999999999999999999999999999999999999999999999999999999999999999
@@ -915,6 +1123,27 @@ scene.setBackgroundImage(img`
     bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
     bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
     `)
+Machetazo = false
+CamKun = sprites.create(img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    `, SpriteKind.Player)
+CamKun.setPosition(0, 200)
+DialogueMode = true
 let Scene_1_CamCun = sprites.create(img`
     . . . . . . c c c . . . . . . . 
     . . . . . . c 5 b c . . . . . . 
@@ -1283,11 +1512,11 @@ Scene_1_Corazon,
     ....................
     ....................
     `],
-250,
+275,
 true
 )
 pause(2000)
-game.showLongText("Camcun y pelada Bien estaban enamoradangos", DialogLayout.Bottom)
+game.showLongText("CamCun y Pelada Bien estaban camote", DialogLayout.Bottom)
 pause(3000)
 game.showLongText("Pero había una traba...", DialogLayout.Bottom)
 pause(2000)
@@ -1313,137 +1542,137 @@ Scene_1_Auto.setPosition(152, 94)
 animation.runImageAnimation(
 Scene_1_Auto,
 [img`
-    ..............eeeeeeeeee........
-    ..............eeeeeeeeee........
-    ..........eeee2222222222ee......
-    ..........eeee2222222222ee......
-    ........eeee22222222222222ee....
-    ........eeee22222222222222ee....
-    ........ee9944222222222244bbee..
-    ........ee9944222222222244bbee..
-    ....eeee99994444222222224499bbee
-    ....eeee99994444222222224499bbee
-    ..ee22229999444444222222449999ee
-    ..ee22229999444444222222449999ee
-    ee2222229999224444444444229999ee
-    ee2222229999224444444444229999ee
-    ee2222229999eeeeeeeeeeeeee9999ee
-    ee2222229999eeeeeeeeeeeeee9999ee
-    ee22222299bbeebbbbbbeebbeebb99ee
-    ee22222299bbeebbbbbbeebbeebb99ee
-    ee22eeeeeeeebbbbbbbbeebbbbeebbee
-    ee22eeeeeeeebbbbbbbbeebbbbeebbee
-    eeee3333eeee22222222ee2222eeeeee
-    eeee3333eeee22222222ee2222eeeeee
-    ee3333eeeeeeeeeeeeeeeeeeeeeeeeee
-    ee3333eeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeffffffeeeeeeeeffffffeeee
-    eeeeeeeeffffffeeeeeeeeffffffeeee
-    ..eeeeffbbccccffeeeeffbbccccff..
-    ..eeeeffbbccccffeeeeffbbccccff..
-    ........bbbbff........bbbbff....
-    ........bbbbff........bbbbff....
+    ..............eeeeeeeeee................
+    ..............eeeeeeeeee................
+    ..........eeee2222222222ee..............
+    ..........eeee2222222222ee..............
+    ........eeee22222222222222ee............
+    ........eeee22222222222222ee............
+    ........ee9944222222222244bbee..........
+    ........ee9944222222222244bbee..........
+    ....eeee99994444222222224499bbee........
+    ....eeee99994444222222224499bbee........
+    ..ee22229999444444222222449999ee........
+    ..ee22229999444444222222449999ee........
+    ee2222229999224444444444229999ee........
+    ee2222229999224444444444229999ee........
+    ee2222229999eeeeeeeeeeeeee9999ee........
+    ee2222229999eeeeeeeeeeeeee9999ee........
+    ee22222299bbeebbbbbbeebbeebb99ee........
+    ee22222299bbeebbbbbbeebbeebb99ee........
+    ee22eeeeeeeebbbbbbbbeebbbbeebbee........
+    ee22eeeeeeeebbbbbbbbeebbbbeebbee........
+    eeee3333eeee22222222ee2222eeeeee........
+    eeee3333eeee22222222ee2222eeeeee........
+    ee3333eeeeeeeeeeeeeeeeeeeeeeeeee........
+    ee3333eeeeeeeeeeeeeeeeeeeeeeeeee........
+    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee........
+    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee........
+    eeeeeeeeffffffeeeeeeeeffffffeeee........
+    eeeeeeeeffffffeeeeeeeeffffffeeee........
+    ..eeeeffbbccccffeeeeffbbccccff..........
+    ..eeeeffbbccccffeeeeffbbccccff..........
+    ........bbbbff........bbbbff............
+    ........bbbbff........bbbbff............
     `,img`
-    ..............eeeeeeeeeee.......
-    ..............eeeeeeeeeee.......
-    ..........eeee22222222222ee.....
-    ..........eeee22222222222ee.....
-    ........eeee222222222222222ee...
-    ........eeee222222222222222ee...
-    ........ee99444444422222244bbee.
-    ........ee99444444422222244bbee.
-    ....eeee999944444444422224499bbe
-    ....eeee999944444444422224499bbe
-    ..ee222299994444444444422449999e
-    ..ee222299994444444444422449999e
-    ee22222299992244444444444229999e
-    ee22222299992244444444444229999e
-    ee2222229999eeeeeeeeeeeeeee9999e
-    ee2222229999eeeeeeeeeeeeeee9999e
-    ee22222299bbeebbbbbbbeebbeebb99e
-    ee22222299bbeebbbbbbbeebbeebb99e
-    ee22eeeeeeeebbbbbbbbbeebbbbeebbe
-    ee22eeeeeeeebbbbbbbbbeebbbbeebbe
-    eeee3333eeee222222222ee2222eeeee
-    eeee3333eeee222222222ee2222eeeee
-    ee3333eeeeeeeeeeeeeeeeeeeeeeeeee
-    ee3333eeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeffffffeeeeeeeeeffffffeee
-    eeeeeeeeffffffeeeeeeeeeffffffeee
-    ..eeeeffffffbbfffeeeeffffffbbff.
-    ..eeeeffffffbbfffeeeeffffffbbff.
-    ........ccbbbb.........ccbbbb...
-    ........ccbbbb.........ccbbbb...
+    ..............eeeeeeeeeee...............
+    ..............eeeeeeeeeee...............
+    ..........eeee22222222222ee.............
+    ..........eeee22222222222ee.............
+    ........eeee222222222222222ee...........
+    ........eeee222222222222222ee...........
+    ........ee99444444422222244bbee.........
+    ........ee99444444422222244bbee.........
+    ....eeee999944444444422224499bbe........
+    ....eeee999944444444422224499bbe........
+    ..ee222299994444444444422449999e........
+    ..ee222299994444444444422449999e........
+    ee22222299992244444444444229999e........
+    ee22222299992244444444444229999e........
+    ee2222229999eeeeeeeeeeeeeee9999e........
+    ee2222229999eeeeeeeeeeeeeee9999e........
+    ee22222299bbeebbbbbbbeebbeebb99e........
+    ee22222299bbeebbbbbbbeebbeebb99e........
+    ee22eeeeeeeebbbbbbbbbeebbbbeebbe........
+    ee22eeeeeeeebbbbbbbbbeebbbbeebbe........
+    eeee3333eeee222222222ee2222eeeee........
+    eeee3333eeee222222222ee2222eeeee........
+    ee3333eeeeeeeeeeeeeeeeeeeeeeeeee........
+    ee3333eeeeeeeeeeeeeeeeeeeeeeeeee........
+    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee........
+    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee........
+    eeeeeeeeffffffeeeeeeeeeffffffeee........
+    eeeeeeeeffffffeeeeeeeeeffffffeee........
+    ..eeeeffffffbbfffeeeeffffffbbff.........
+    ..eeeeffffffbbfffeeeeffffffbbff.........
+    ........ccbbbb.........ccbbbb...........
+    ........ccbbbb.........ccbbbb...........
     `,img`
-    ..............eeeeeeeeee........
-    ..............eeeeeeeeee........
-    ..........eeee2222222222ee......
-    ..........eeee2222222222ee......
-    ........eeee22222222222222ee....
-    ........eeee22222222222222ee....
-    ........ee9944222222444444bbee..
-    ........ee9944222222444444bbee..
-    ....eeee99994422222244444499bbee
-    ....eeee99994422222244444499bbee
-    ..ee22229999444422222244449999ee
-    ..ee22229999444422222244449999ee
-    ee2222229999224444444444229999ee
-    ee2222229999224444444444229999ee
-    ee2222229999eeeeeeeeeeeeee9999ee
-    ee2222229999eeeeeeeeeeeeee9999ee
-    ee22222299bbeebbbbbbeebbeebb99ee
-    ee22222299bbeebbbbbbeebbeebb99ee
-    ee22eeeeeeeebbbbbbbbeebbbbeebbee
-    ee22eeeeeeeebbbbbbbbeebbbbeebbee
-    eeee3333eeee22222222ee2222eeeeee
-    eeee3333eeee22222222ee2222eeeeee
-    ee3333eeeeeeeeeeeeeeeeeeeeeeeeee
-    ee3333eeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeffffffeeeeeeeeffffffeeee
-    eeeeeeeeffffffeeeeeeeeffffffeeee
-    ..eeeeffccbbbbffeeeeffccbbbbff..
-    ..eeeeffccbbbbffeeeeffccbbbbff..
-    ........ffffff........ffffff....
-    ........ffffff........ffffff....
+    ..............eeeeeeeeee................
+    ..............eeeeeeeeee................
+    ..........eeee2222222222ee..............
+    ..........eeee2222222222ee..............
+    ........eeee22222222222222ee............
+    ........eeee22222222222222ee............
+    ........ee9944222222444444bbee..........
+    ........ee9944222222444444bbee..........
+    ....eeee99994422222244444499bbee........
+    ....eeee99994422222244444499bbee........
+    ..ee22229999444422222244449999ee........
+    ..ee22229999444422222244449999ee........
+    ee2222229999224444444444229999ee........
+    ee2222229999224444444444229999ee........
+    ee2222229999eeeeeeeeeeeeee9999ee........
+    ee2222229999eeeeeeeeeeeeee9999ee........
+    ee22222299bbeebbbbbbeebbeebb99ee........
+    ee22222299bbeebbbbbbeebbeebb99ee........
+    ee22eeeeeeeebbbbbbbbeebbbbeebbee........
+    ee22eeeeeeeebbbbbbbbeebbbbeebbee........
+    eeee3333eeee22222222ee2222eeeeee........
+    eeee3333eeee22222222ee2222eeeeee........
+    ee3333eeeeeeeeeeeeeeeeeeeeeeeeee........
+    ee3333eeeeeeeeeeeeeeeeeeeeeeeeee........
+    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee........
+    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee........
+    eeeeeeeeffffffeeeeeeeeffffffeeee........
+    eeeeeeeeffffffeeeeeeeeffffffeeee........
+    ..eeeeffccbbbbffeeeeffccbbbbff..........
+    ..eeeeffccbbbbffeeeeffccbbbbff..........
+    ........ffffff........ffffff............
+    ........ffffff........ffffff............
     `,img`
-    ..............eeeeeeeeee........
-    ..............eeeeeeeeee........
-    ..........eeee2222222222ee......
-    ..........eeee2222222222ee......
-    ........eeee22222222222222ee....
-    ........eeee22222222222222ee....
-    ........ee9944222222222244bbee..
-    ........ee9944222222222244bbee..
-    ....eeee99994422222222224499bbee
-    ....eeee99994422222222224499bbee
-    ..ee22229999444422222222449999ee
-    ..ee22229999444422222222449999ee
-    ee2222229999224444444444229999ee
-    ee2222229999224444444444229999ee
-    ee2222229999eeeeeeeeeeeeee9999ee
-    ee2222229999eeeeeeeeeeeeee9999ee
-    ee22222299bbeebbbbbbeebbeebb99ee
-    ee22222299bbeebbbbbbeebbeebb99ee
-    ee22eeeeeeeebbbbbbbbeebbbbeebbee
-    ee22eeeeeeeebbbbbbbbeebbbbeebbee
-    eeee3333eeee22222222ee2222eeeeee
-    eeee3333eeee22222222ee2222eeeeee
-    ee3333eeeeeeeeeeeeeeeeeeeeeeeeee
-    ee3333eeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    eeeeeeeeffffffeeeeeeeeffffffeeee
-    eeeeeeeeffffffeeeeeeeeffffffeeee
-    ..eeeeffbbbbccffeeeeffbbbbccff..
-    ..eeeeffbbbbccffeeeeffbbbbccff..
-    ........ccffff........ccffff....
-    ........ccffff........ccffff....
+    ..............eeeeeeeeee................
+    ..............eeeeeeeeee................
+    ..........eeee2222222222ee..............
+    ..........eeee2222222222ee..............
+    ........eeee22222222222222ee............
+    ........eeee22222222222222ee............
+    ........ee9944222222222244bbee..........
+    ........ee9944222222222244bbee..........
+    ....eeee99994422222222224499bbee........
+    ....eeee99994422222222224499bbee........
+    ..ee22229999444422222222449999ee........
+    ..ee22229999444422222222449999ee........
+    ee2222229999224444444444229999ee........
+    ee2222229999224444444444229999ee........
+    ee2222229999eeeeeeeeeeeeee9999ee........
+    ee2222229999eeeeeeeeeeeeee9999ee........
+    ee22222299bbeebbbbbbeebbeebb99ee........
+    ee22222299bbeebbbbbbeebbeebb99ee........
+    ee22eeeeeeeebbbbbbbbeebbbbeebbee........
+    ee22eeeeeeeebbbbbbbbeebbbbeebbee........
+    eeee3333eeee22222222ee2222eeeeee........
+    eeee3333eeee22222222ee2222eeeeee........
+    ee3333eeeeeeeeeeeeeeeeeeeeeeeeee........
+    ee3333eeeeeeeeeeeeeeeeeeeeeeeeee........
+    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee........
+    eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee........
+    eeeeeeeeffffffeeeeeeeeffffffeeee........
+    eeeeeeeeffffffeeeeeeeeffffffeeee........
+    ..eeeeffbbbbccffeeeeffbbbbccff..........
+    ..eeeeffbbbbccffeeeeffbbbbccff..........
+    ........ccffff........ccffff............
+    ........ccffff........ccffff............
     `],
 100,
 true
@@ -1468,15 +1697,15 @@ let Scene_1_Papa_Bien = sprites.create(img`
     . . . f f f f f f . . . 
     . . . f f . . f f . . . 
     `, SpriteKind.NPC)
-Scene_1_Papa_Bien.setPosition(89, 108)
+Scene_1_Papa_Bien.setPosition(89, 106)
 animation.runImageAnimation(
 Scene_1_Papa_Bien,
 [img`
-    . . . . . . . . . . . . 
-    . . . f f f f f f . . . 
-    . f f f e e e e f f f . 
+    2 2 . . . . . . . . . . 
+    2 2 . f f f f f f . . . 
+    2 2 f f e e e e f f f . 
     f f f e e e e e e f f f 
-    f f f f 4 e e e f f f f 
+    2 2 f f 4 e e e f f f f 
     f f f 4 4 4 e e f f f f 
     f f f 4 4 4 4 e e f f f 
     f 4 e 4 4 4 4 4 4 e 4 f 
@@ -1526,15 +1755,15 @@ Scene_1_Papa_Bien,
 100,
 true
 )
-story.spriteMoveToLocation(Scene_1_Papa_Bien, 89, 110, 2)
+story.spriteMoveToLocation(Scene_1_Papa_Bien, 89, 110, 5)
 animation.runImageAnimation(
 Scene_1_Papa_Bien,
 [img`
-    . . . f f f f f . . . . 
-    . . f e e e e e f f . . 
-    . f e e e e e e e f f . 
+    2 2 . f f f f f . . . . 
+    2 2 f e e e e e f f . . 
+    2 2 e e e e e e e f f . 
     f e e e e e e e f f f f 
-    f e e 4 e e e f f f f f 
+    2 2 e 4 e e e f f f f f 
     f e e 4 4 e e e f f f f 
     f f e 4 4 4 4 4 f f f f 
     f f e 4 4 f f 4 e 4 f f 
@@ -1588,11 +1817,11 @@ story.spriteMoveToLocation(Scene_1_Papa_Bien, 65, 110, 20)
 animation.runImageAnimation(
 Scene_1_Papa_Bien,
 [img`
-    . . . . f f f f . . . . 
-    . . f f e e e e f f . . 
-    . f e e e e e e e f f . 
+    2 2 . . f f f f . . . . 
+    2 2 f f e e e e f f . . 
+    2 2 e e e e e e e f f . 
     f f e f e e e e e e f f 
-    f f f e e e e e e e e f 
+    2 2 f e e e e e e e e f 
     f f f e e e e e e f e f 
     f f f f e e e e f f f f 
     f f f f f f f f f f f f 
@@ -1644,14 +1873,14 @@ true
 )
 story.spriteMoveToLocation(Scene_1_Papa_Bien, 65, 80, 20)
 animation.stopAnimation(animation.AnimationTypes.All, Scene_1_Papa_Bien)
-story.printText("Hija!! Que hacej con este Camba Cunumi!!", 40, 89, 2)
+story.printText("Hija!! Que hacej con este Camba Cunumi!!", 40, 108, 2)
 scene.cameraShake(2, 1000)
 pause(1000)
 animation.stopAnimation(animation.AnimationTypes.All, Scene_1_Corazon)
 pause(1000)
 Scene_1_Corazon.destroy(effects.fire, 700)
 pause(2500)
-story.printText("Te subij al auto AHORINGA!", 40, 89, 2)
+story.printText("Te subij al auto AHORINGA!", 40, 108, 2)
 scene.cameraShake(2, 1000)
 pause(1000)
 animation.stopAnimation(animation.AnimationTypes.All, Scene_1_CamCun)
@@ -1734,11 +1963,11 @@ Scene_1_Cambita_Bien.destroy()
 animation.runImageAnimation(
 Scene_1_Papa_Bien,
 [img`
-    . . . . . . . . . . . . 
-    . . . f f f f f f . . . 
-    . f f f e e e e f f f . 
+    2 2 . . . . . . . . . . 
+    2 2 . f f f f f f . . . 
+    2 2 f f e e e e f f f . 
     f f f e e e e e e f f f 
-    f f f f 4 e e e f f f f 
+    2 2 f f 4 e e e f f f f 
     f f f 4 4 4 e e f f f f 
     f f f 4 4 4 4 e e f f f 
     f 4 e 4 4 4 4 4 4 e 4 f 
@@ -1792,11 +2021,11 @@ story.spriteMoveToLocation(Scene_1_Papa_Bien, 65, 110, 20)
 animation.runImageAnimation(
 Scene_1_Papa_Bien,
 [img`
-    . . . . . . . . . . . . 
-    . . . f f f f f f . . . 
-    . f f f e e e e e f . . 
+    2 2 . . . . . . . . . . 
+    2 2 . f f f f f f . . . 
+    2 2 f f e e e e e f . . 
     f f f e e e e e e e f . 
-    f f f f e e e e e e e f 
+    2 2 f f e e e e e e e f 
     f f f f f e e e 4 e e f 
     f f f f e e e 4 4 e e f 
     f f f f 4 4 4 4 4 e f f 
@@ -1850,11 +2079,11 @@ story.spriteMoveToLocation(Scene_1_Papa_Bien, 89, 110, 20)
 animation.runImageAnimation(
 Scene_1_Papa_Bien,
 [img`
-    . . . . f f f f . . . . 
-    . . f f e e e e f f . . 
-    . f e e e e e e e f f . 
+    2 2 . . f f f f . . . . 
+    2 2 f f e e e e f f . . 
+    2 2 e e e e e e e f f . 
     f f e f e e e e e e f f 
-    f f f e e e e e e e e f 
+    2 2 f e e e e e e e e f 
     f f f e e e e e e f e f 
     f f f f e e e e f f f f 
     f f f f f f f f f f f f 
@@ -1904,13 +2133,14 @@ Scene_1_Papa_Bien,
 100,
 true
 )
-story.spriteMoveToLocation(Scene_1_Papa_Bien, 89, 108, 5)
+story.spriteMoveToLocation(Scene_1_Papa_Bien, 89, 106, 5)
 Scene_1_Papa_Bien.destroy()
+pause(2000)
+music.setVolume(255)
+music.spooky.play()
 story.spriteMoveToLocation(Scene_1_Auto, 0, 94, 35)
 Scene_1_Auto.destroy()
 pause(1000)
-music.setVolume(255)
-music.spooky.play()
 animation.runImageAnimation(
 Scene_1_CamCun,
 [img`
@@ -2001,9 +2231,9 @@ Scene_1_CamCun,
     . . . . f e b b f 1 b f f f . . 
     . . . . f b b b b b b f f . . . 
     . . . . . f e e e e f e e . . . 
-    . . . . . f 5 b b e b b e . . . 
-    . . . . f 5 5 5 5 e b b e . . . 
-    . . . . c b 5 5 5 5 e e . . . . 
+    . . . . . f 1 b b e b b e . . . 
+    . . . . f 1 1 1 1 e b b e . . . 
+    . . . . c b 1 1 1 1 e e . . . . 
     . . . . . f f f f f f . . . . . 
     `,img`
     . . . . . . . . . . . . . . . . 
@@ -2019,8 +2249,8 @@ Scene_1_CamCun,
     . . . . f e b b f 1 b f f f . . 
     . . . . f b b b b e e f f . . . 
     . . . . . f e e e b b e f . . . 
-    . . . . f 5 b b e b b e . . . . 
-    . . . . c 5 5 5 5 e e f . . . . 
+    . . . . f 1 b b e b b e . . . . 
+    . . . . c 1 1 1 1 e e f . . . . 
     . . . . . f f f f f f . . . . . 
     `,img`
     . . . . . . . c c . . . . . . . 
@@ -2035,9 +2265,9 @@ Scene_1_CamCun,
     . . . . f e b b f 1 b f f f . . 
     . . . . f b b b b b b f f . . . 
     . . . . . f e e e e f e e . . . 
-    . . . . . f 5 b b e b b e . . . 
-    . . . . f 5 5 5 5 e b b e . . . 
-    . . . . c b 5 5 5 5 e e . . . . 
+    . . . . . f 1 b b e b b e . . . 
+    . . . . f 1 1 1 1 e b b e . . . 
+    . . . . c b 1 1 1 1 e e . . . . 
     . . . . . f f f f f f . . . . . 
     `,img`
     . . . . . . . . . . . . . . . . 
@@ -2053,24 +2283,105 @@ Scene_1_CamCun,
     . . . . f e b b f 1 b f f f . . 
     . . . . f b b b b b b f f . . . 
     . . . . . f e e e e e b b e . . 
-    . . . . f 5 5 b b b e b b e . . 
-    . . . . c 5 5 5 5 5 e e e . . . 
+    . . . . f 1 1 b b b e b b e . . 
+    . . . . c 1 1 1 1 1 e e e . . . 
+    . . . . . f f f f f f . . . . . 
+    `],
+100,
+false
+)
+pause(1000)
+animation.runImageAnimation(
+Scene_1_CamCun,
+[img`
+    . . . . . . . c c . . . . . . . 
+    . . . . . . c 5 c . . . . . . . 
+    . . . . c c 5 5 5 c c c . . . . 
+    . . c c c c 5 5 5 5 c b c c . . 
+    . c b b 5 b 5 5 5 5 b 5 b b c . 
+    . c b 5 5 b b 5 5 b b 5 5 b c . 
+    . . c 5 5 5 b b b b 5 5 5 f . . 
+    . . . f 5 5 5 5 5 5 5 5 f f . . 
+    . . . . f e e e f b e e f f . . 
+    . . . . f e b b f 1 b f f f . . 
+    . . . . f b b b b b b f f . . . 
+    . . . . . f e e e e f e e . . . 
+    . . . . . f 1 b b e b b e . . . 
+    . . . . f 1 1 1 1 e b b e . . . 
+    . . . . c b 1 1 1 1 e e . . . . 
+    . . . . . f f f f f f . . . . . 
+    `,img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . c c . . . . . . . 
+    . . . . . . c c 5 c . . . . . . 
+    . . . . c c 5 5 5 c c c . . . . 
+    . . c c c c 5 5 5 5 c b c c . . 
+    . c b b 5 b 5 5 5 5 b 5 b b c . 
+    . c b 5 5 b b 5 5 b b 5 5 b c . 
+    . . c 5 5 5 b b b b 5 5 5 f . . 
+    . . . f 5 5 5 5 5 5 5 5 f f . . 
+    . . . . f e e e f b e e f f . . 
+    . . . . f e b b f 1 b f f f . . 
+    . . . . f b b b b e e f f . . . 
+    . . . . . f e e e b b e f . . . 
+    . . . . f 1 b b e b b e . . . . 
+    . . . . c 1 1 1 1 e e f . . . . 
+    . . . . . f f f f f f . . . . . 
+    `,img`
+    . . . . . . . c c . . . . . . . 
+    . . . . . . c 5 c . . . . . . . 
+    . . . . c c 5 5 5 c c c . . . . 
+    . . c c c c 5 5 5 5 c b c c . . 
+    . c b b 5 b 5 5 5 5 b 5 b b c . 
+    . c b 5 5 b b 5 5 b b 5 5 b c . 
+    . . c 5 5 5 b b b b 5 5 5 f . . 
+    . . . f 5 5 5 5 5 5 5 5 f f . . 
+    . . . . f e e e f b e e f f . . 
+    . . . . f e b b f 1 b f f f . . 
+    . . . . f b b b b b b f f . . . 
+    . . . . . f e e e e f e e . . . 
+    . . . . . f 1 b b e b b e . . . 
+    . . . . f 1 1 1 1 e b b e . . . 
+    . . . . c b 1 1 1 1 e e . . . . 
+    . . . . . f f f f f f . . . . . 
+    `,img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . c c . . . . . . . 
+    . . . . . . c c 5 c . . . . . . 
+    . . . . c c 5 5 5 c c c . . . . 
+    . . c c c c 5 5 5 5 c b c c . . 
+    . c b b 5 b 5 5 5 5 b 5 b b c . 
+    . c b 5 5 b b 5 5 b b 5 5 b c . 
+    . . c 5 5 5 b b b b 5 5 5 f . . 
+    . . . f 5 5 5 5 5 5 5 5 f f . . 
+    . . . . f e e e f b e e f f . . 
+    . . . . f e b b f 1 b f f f . . 
+    . . . . f b b b b b b f f . . . 
+    . . . . . f e e e e e b b e . . 
+    . . . . f 1 1 b b b e b b e . . 
+    . . . . c 1 1 1 1 1 e e e . . . 
     . . . . . f f f f f f . . . . . 
     `],
 100,
 true
 )
-pause(400)
 story.spriteMoveToLocation(Scene_1_CamCun, 65, 103, 5)
 animation.stopAnimation(animation.AnimationTypes.All, Scene_1_CamCun)
+pause(2000)
+effects.blizzard.startScreenEffect()
+pause(2000)
 music.setVolume(20)
+music.playMelody("A G F F E D C - ", 120)
 music.playMelody("A G F F E D C C ", 120)
-music.playMelody("A G F F E D C C ", 120)
+color.startFade(color.originalPalette, color.Black, 3000)
+effects.blizzard.endScreenEffect()
+pause(1300)
 story.cancelAllCutscenes()
 animation.stopAnimation(animation.AnimationTypes.All, Scene_1_Papa_Bien)
 animation.stopAnimation(animation.AnimationTypes.All, Scene_1_Cambita_Bien)
 animation.stopAnimation(animation.AnimationTypes.All, Scene_1_CamCun)
 DialogueMode = false
+info.setLife(3)
 clearLevel()
 forever(function () {
     if (info.life() > 5) {
