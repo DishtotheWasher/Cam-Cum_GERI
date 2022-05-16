@@ -97,7 +97,7 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . . c b 1 1 1 1 b c . . . . 
         . . . . . f f f f f f . . . . . 
         `],
-    100,
+    70,
     true
     )
 })
@@ -112,9 +112,81 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Coin, function (sprite, otherSpr
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     Machetazo = true
     music.knock.play()
-    CamKun.setImage(assets.image`myImage1`)
+    animation.runImageAnimation(
+    CamKun,
+    [img`
+        . . . . . . c c c . . . . . . . 
+        . . . . . . c 5 b c . . . . . . 
+        . . . . c c c 5 5 c c c . . . . 
+        . . c c c c 5 5 5 5 c b c c . . 
+        . c b b 5 b 5 5 5 5 b 5 b b c . 
+        . c b 5 5 b b 5 5 b b 5 5 b c . 
+        . . c 5 5 5 b b b b 5 5 5 f . . 
+        . . f f 5 5 5 5 5 5 5 5 f f . . 
+        . . f f f b f e e f b f f f . . 
+        . . f f f 1 f b b f 1 f f f . . 
+        . . . f f b b b b b b f f . . . 
+        . . . e e f e e e e f e e . . . 
+        . f e b f 9 9 9 9 9 9 9 9 9 9 9 
+        . f e e f 9 9 9 9 9 9 9 9 9 1 1 
+        . . . . c b 1 1 1 1 b c . . . . 
+        . . . . . f f f f f f . . . . . 
+        `,img`
+        . . . . . . . c c . . . . . . . 
+        . . . . . . c 5 c . . . . . . . 
+        . . . . c c 5 5 5 c c c . . . . 
+        . . c c c c 5 5 5 5 c b c c . . 
+        . c b b 5 b 5 5 5 5 b 5 b b c . 
+        . c b 5 5 b b 5 5 b b 5 5 b c . 
+        . . c 5 5 5 b b b b 5 5 5 f . . 
+        . . . f 5 5 5 5 5 5 5 5 f f . . 
+        . . . . f e e e f b e e f f . . 
+        . . 1 . f e b b f 1 b f f f . . 
+        . 1 . . f b b b b b b f f . . . 
+        . . . . . f e e e e f e e . . . 
+        9 9 9 9 9 f 1 b b e b b e . . . 
+        1 1 9 9 f 1 1 1 1 e b b e . . . 
+        . . . . c b 1 1 1 1 e e . . . . 
+        . . . . . f f f f f f . . . . . 
+        `,img`
+        . . . . . . c c c . . . . . . . 
+        . . . . . . c 5 b c . . . . . . 
+        . . . . c c c 5 5 c c c . . . . 
+        . . c c c c 5 5 5 5 c b c c . . 
+        . c b b 5 b 5 5 5 5 b 5 b b c . 
+        . c b 5 5 b b 5 5 b b 5 5 b c . 
+        . . c 5 5 5 b b b b 5 5 5 f . . 
+        . . f f 5 5 5 5 5 5 5 5 f f . . 
+        . . f f f f f f f f f f f f . . 
+        . . f f f f f f f f f f f f . . 
+        . . . f f f f f f f f f f . . . 
+        . . . e e f f f f f f f e . . . 
+        9 9 9 9 f b 1 b b 1 b c b e f . 
+        1 1 9 9 f 1 1 1 1 1 1 f e e f . 
+        . . . . c b 1 1 1 1 b c . . . . 
+        . . . . . f f f f f f . . . . . 
+        `,img`
+        . . . . . . . c c . . . . . . . 
+        . . . . . . . c 5 c . . . . . . 
+        . . . . c c c 5 5 5 c c . . . . 
+        . . c c b c 5 5 5 5 c c c c . . 
+        . c b b 5 b 5 5 5 5 b 5 b b c . 
+        . c b 5 5 b b 5 5 b b 5 5 b c . 
+        . . f 5 5 5 b b b b 5 5 5 c . . 
+        . . f f 5 5 5 5 5 5 5 5 f . . . 
+        . . f f e e b f e e e f . . . . 
+        . . f f f b 1 f b b e f 1 . 1 . 
+        . . . f f b b b b b b f . 1 . 1 
+        . . . e e f e e e e f . . . . . 
+        . . . f b b f 9 9 9 9 9 9 9 9 9 
+        . . . f b b f 9 9 9 9 9 9 9 1 1 
+        . . . . e e 1 1 1 1 b c . . . . 
+        . . . . . f f f f f f . . . . . 
+        `],
+    125,
+    false
+    )
     pause(500)
-    CamKun.setImage(assets.image`myImage0`)
     Machetazo = false
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -189,7 +261,7 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . . c 1 1 1 1 1 e e e . . . 
         . . . . . f f f f f f . . . . . 
         `],
-    100,
+    70,
     true
     )
 })
@@ -283,7 +355,7 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . e e e 1 1 1 1 1 c . . . . 
         . . . . . f f f f f f . . . . . 
         `],
-    100,
+    70,
     true
     )
 })
@@ -515,7 +587,7 @@ function CreateLevel () {
             bbbbbbbbbbbbbbbbbbbb
             bbbbbbbbbbbbbbbbbbbb
             `, SpriteKind.NPC)
-        Vendedor_Derecha_1.setPosition(80, 488)
+        Vendedor_Derecha_1.setPosition(74, 488)
         Vendedor_Derecha_2 = sprites.create(img`
             eeeeeeeeeeeeeeeeeeee
             eeeeeeeeeeeeeeeeeeee
@@ -548,7 +620,7 @@ function CreateLevel () {
             bbbbbbbbbbbbbbbbbbbb
             bbbbbbbbbbbbbbbbbbbb
             `, SpriteKind.NPC)
-        Vendedor_Derecha_2.setPosition(80, 535)
+        Vendedor_Derecha_2.setPosition(74, 535)
         Vendedor_Derecha_3 = sprites.create(img`
             eeeeeeeeeeeeeeeeeeee
             eeeeeeeeeeeeeeeeeeee
@@ -581,7 +653,7 @@ function CreateLevel () {
             bbbbbbbbbbbbbbbbbbbb
             bbbbbbbbbbbbbbbbbbbb
             `, SpriteKind.NPC)
-        Vendedor_Derecha_3.setPosition(80, 582)
+        Vendedor_Derecha_3.setPosition(74, 582)
         Vendedor_Izquierda_1 = sprites.create(img`
             eeeeeeeeeeeeeeeeeeee
             eeeeeeeeeeeeeeeeeeee
@@ -614,7 +686,7 @@ function CreateLevel () {
             bbbbbbbbbbbbbbbbbbbb
             bbbbbbbbbbbbbbbbbbbb
             `, SpriteKind.NPC)
-        Vendedor_Izquierda_1.setPosition(128, 488)
+        Vendedor_Izquierda_1.setPosition(134, 488)
         Vendedor_Izquierda_2 = sprites.create(img`
             eeeeeeeeeeeeeeeeeeee
             eeeeeeeeeeeeeeeeeeee
@@ -647,7 +719,7 @@ function CreateLevel () {
             bbbbbbbbbbbbbbbbbbbb
             bbbbbbbbbbbbbbbbbbbb
             `, SpriteKind.NPC)
-        Vendedor_Izquierda_2.setPosition(128, 535)
+        Vendedor_Izquierda_2.setPosition(134, 535)
         Vendedor_Izquierda_3 = sprites.create(img`
             eeeeeeeeeeeeeeeeeeee
             eeeeeeeeeeeeeeeeeeee
@@ -680,8 +752,8 @@ function CreateLevel () {
             bbbbbbbbbbbbbbbbbbbb
             bbbbbbbbbbbbbbbbbbbb
             `, SpriteKind.NPC)
-        Vendedor_Izquierda_3.setPosition(128, 582)
-        for (let index = 0; index < 2; index++) {
+        Vendedor_Izquierda_3.setPosition(134, 582)
+        for (let index = 0; index < 3; index++) {
             Comida = sprites.create(img`
                 . . . . . . . . . . . e e 
                 . . . . . . . . . . e e e 
@@ -815,7 +887,7 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . . c e e 1 1 1 1 1 f . . . 
         . . . . . f f f f f f f . . . . 
         `],
-    100,
+    70,
     true
     )
 })
@@ -2391,7 +2463,7 @@ forever(function () {
 forever(function () {
     scene.cameraFollowSprite(CamKun)
     if (DialogueMode == false) {
-        controller.moveSprite(CamKun)
+        controller.moveSprite(CamKun, 40, 40)
     } else if (DialogueMode == true) {
         controller.moveSprite(CamKun, 0, 0)
     }
