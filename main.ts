@@ -97,7 +97,7 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . . c b 1 1 1 1 b c . . . . 
         . . . . . f f f f f f . . . . . 
         `],
-    70,
+    130,
     true
     )
 })
@@ -182,6 +182,23 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . f b b f 9 9 9 9 9 9 9 1 1 
         . . . . e e 1 1 1 1 b c . . . . 
         . . . . . f f f f f f . . . . . 
+        `,img`
+        . . . . . . c c c . . . . . . . 
+        . . . . . . c 5 b c . . . . . . 
+        . . . . c c c 5 5 c c c . . . . 
+        . . c c c c 5 5 5 5 c b c c . . 
+        . c b b 5 b 5 5 5 5 b 5 b b c . 
+        . c b 5 5 b b 5 5 b b 5 5 b c . 
+        . . c 5 5 5 b b b b 5 5 5 f . . 
+        . . f f 5 5 5 5 5 5 5 5 f f . . 
+        . . f f f b f e e f b f f f . . 
+        . . f f f 1 f b b f 1 f f f . . 
+        . . . f f b b b b b b f f . . . 
+        . . . e e f e e e e f e e . . . 
+        . . e b f b 1 b b 1 b c b e . . 
+        . . e e f 1 1 1 1 1 1 f e e . . 
+        . . . . c b 1 1 1 1 b c . . . . 
+        . . . . . f f f f f f . . . . . 
         `],
     125,
     false
@@ -261,7 +278,7 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . . c 1 1 1 1 1 e e e . . . 
         . . . . . f f f f f f . . . . . 
         `],
-    70,
+    130,
     true
     )
 })
@@ -355,7 +372,7 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . e e e 1 1 1 1 1 c . . . . 
         . . . . . f f f f f f . . . . . 
         `],
-    70,
+    130,
     true
     )
 })
@@ -887,7 +904,7 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . . c e e 1 1 1 1 1 f . . . 
         . . . . . f f f f f f f . . . . 
         `],
-    70,
+    130,
     true
     )
 })
