@@ -12,19 +12,6 @@ namespace SpriteKind {
     export const River = SpriteKind.create()
     export const WALL_SHOOTER = SpriteKind.create()
 }
-/**
- * HISTORIA CAM-KUN
- * 
- * INTRO
- * 
- * Cam-Kun y Cambita Bien se enamoran, besos. Amor prohibido.
- * 
- * Aparece Papá Bien desaprueba a Cam-Kun, señala que nunca sera como Gomelo, que no se acerque a su hija. Se lleva a Bien.
- * 
- * NIVEL 1 - Inicio de la aventura en Casa de Cam-Kun
- * 
- * Dialogo con Mama-Kun.
- */
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
     CamKun,
@@ -518,6 +505,7 @@ function CreateLevel () {
         )
         tiles.placeOnRandomTile(Quinto, assets.tile`myTile1`)
         pause(500)
+        Musica_Santa_Cruj()
     } else if (level == 2) {
         NPCMama.destroy()
         tiles.setCurrentTilemap(tilemap`El Pirai`)
@@ -915,6 +903,9 @@ function clearLevel () {
     for (let value of sprites.allOfKind(SpriteKind.WALL_SHOOTER)) {
         value.destroy()
     }
+    for (let value of sprites.allOfKind(SpriteKind.WALL_SHOOTER)) {
+        value.destroy()
+    }
     scene.setBackgroundImage(img`
         ................................................................................................................................................................
         ................................................................................................................................................................
@@ -1040,6 +1031,55 @@ function clearLevel () {
     level += 1
     CreateLevel()
 }
+function Musica_Santa_Cruj () {
+    music.playTone(294, music.beat(BeatFraction.Half))
+    music.playTone(392, music.beat(BeatFraction.Half))
+    music.playTone(294, music.beat(BeatFraction.Half))
+    music.playTone(392, music.beat(BeatFraction.Half))
+    music.playTone(294, music.beat(BeatFraction.Half))
+    music.playTone(392, music.beat(BeatFraction.Half))
+    music.playTone(294, music.beat(BeatFraction.Half))
+    music.playTone(392, music.beat(BeatFraction.Half))
+    music.playTone(587, music.beat(BeatFraction.Whole))
+    music.playTone(587, music.beat(BeatFraction.Whole))
+    music.playTone(587, music.beat(BeatFraction.Whole))
+    music.rest(music.beat(BeatFraction.Whole))
+    music.playTone(330, music.beat(BeatFraction.Half))
+    music.playTone(392, music.beat(BeatFraction.Half))
+    music.playTone(330, music.beat(BeatFraction.Half))
+    music.playTone(392, music.beat(BeatFraction.Half))
+    music.playTone(330, music.beat(BeatFraction.Half))
+    music.playTone(392, music.beat(BeatFraction.Half))
+    music.playTone(330, music.beat(BeatFraction.Half))
+    music.playTone(392, music.beat(BeatFraction.Half))
+    music.playTone(494, music.beat(BeatFraction.Whole))
+    music.playTone(494, music.beat(BeatFraction.Whole))
+    music.playTone(392, music.beat(BeatFraction.Whole))
+    music.rest(music.beat(BeatFraction.Whole))
+    music.playTone(294, music.beat(BeatFraction.Half))
+    music.playTone(392, music.beat(BeatFraction.Half))
+    music.playTone(294, music.beat(BeatFraction.Half))
+    music.playTone(392, music.beat(BeatFraction.Half))
+    music.playTone(294, music.beat(BeatFraction.Half))
+    music.playTone(392, music.beat(BeatFraction.Half))
+    music.playTone(294, music.beat(BeatFraction.Half))
+    music.playTone(392, music.beat(BeatFraction.Half))
+    music.playTone(587, music.beat(BeatFraction.Whole))
+    music.playTone(587, music.beat(BeatFraction.Whole))
+    music.playTone(587, music.beat(BeatFraction.Whole))
+    music.rest(music.beat(BeatFraction.Whole))
+    music.playTone(330, music.beat(BeatFraction.Half))
+    music.playTone(294, music.beat(BeatFraction.Half))
+    music.playTone(262, music.beat(BeatFraction.Half))
+    music.playTone(494, music.beat(BeatFraction.Half))
+    music.playTone(440, music.beat(BeatFraction.Half))
+    music.playTone(494, music.beat(BeatFraction.Half))
+    music.playTone(523, music.beat(BeatFraction.Half))
+    music.playTone(587, music.beat(BeatFraction.Half))
+    music.playTone(392, music.beat(BeatFraction.Whole))
+    music.playTone(392, music.beat(BeatFraction.Whole))
+    music.playTone(392, music.beat(BeatFraction.Whole))
+}
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     if (Machetazo == true) {
         otherSprite.destroy(effects.disintegrate, 700)
@@ -1052,6 +1092,19 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
         pause(1000)
     }
 })
+/**
+ * HISTORIA CAM-KUN
+ * 
+ * INTRO
+ * 
+ * Cam-Kun y Cambita Bien se enamoran, besos. Amor prohibido.
+ * 
+ * Aparece Papá Bien desaprueba a Cam-Kun, señala que nunca sera como Gomelo, que no se acerque a su hija. Se lleva a Bien.
+ * 
+ * NIVEL 1 - Inicio de la aventura en Casa de Cam-Kun
+ * 
+ * Dialogo con Mama-Kun.
+ */
 let Vibora: Sprite = null
 let Comida: Sprite = null
 let Vendedor_Izquierda_3: Sprite = null
