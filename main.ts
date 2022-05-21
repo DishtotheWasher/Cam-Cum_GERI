@@ -13,6 +13,11 @@ namespace SpriteKind {
     export const WALL_SHOOTER = SpriteKind.create()
     export const PERSONAJE_INTRO = SpriteKind.create()
     export const Lvl_2_Gate_Keeper_SONSO = SpriteKind.create()
+    export const Chest = SpriteKind.create()
+    export const Item = SpriteKind.create()
+}
+namespace StatusBarKind {
+    export const Item = StatusBarKind.create()
 }
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
@@ -102,6 +107,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.NPC, function (sprite, otherSpri
             story.spriteSayText(Vendedor_Derecha_2, convertToText(Random_Gramos_Queso_Menonita))
             DialogueMode = false
             Vendedor_Derecha_2.setKind(SpriteKind.Complete)
+            pause(60000)
         }
     }
 })
@@ -109,6 +115,9 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Coin, function (sprite, otherSpr
     info.changeScoreBy(1)
     music.baDing.play()
     Quinto.destroy(effects.starField, 1000)
+})
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    myMinimap = tilemap`El Pirai`
 })
 function INTRO_CamKun () {
     DialogueMode = true
@@ -1731,6 +1740,13 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Lvl_2_Gate_Keeper_SONSO, functio
             PRUEBA_RESPUESTA_SONSO = game.askForString(true)
             if (PRUEBA_RESPUESTA_SONSO == convertToText(Random_Gramos_Queso_Menonita)) {
                 game.showLongText("hmmm...Ya choco, voy a probar con eso, si no sirve, te voy a sacar la puta, podej pasar..", DialogLayout.Bottom)
+                LVL2_Gate_Keeper_SONSO.setKind(SpriteKind.Complete)
+                tiles.setWallAt(tiles.getTileLocation(33, 40), false)
+                tiles.setWallAt(tiles.getTileLocation(33, 41), false)
+                tiles.setTileAt(tiles.getTileLocation(33, 40), assets.tile`stairWest1`)
+                tiles.setTileAt(tiles.getTileLocation(32, 40), assets.tile`stairWest1`)
+                tiles.setTileAt(tiles.getTileLocation(33, 41), assets.tile`stairWest2`)
+                tiles.setTileAt(tiles.getTileLocation(32, 41), assets.tile`stairWest2`)
             } else {
                 game.showLongText("A mi no me la vaj a charlar, no volvaj por aca, cunumi e mierda", DialogLayout.Bottom)
                 scene.cameraShake(3, 1000)
@@ -1914,6 +1930,53 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     130,
     true
     )
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Chest, function (sprite, otherSprite) {
+    game.showLongText("Tocar \"A\" para abrir el cofre.", DialogLayout.Bottom)
+    if (controller.A.isPressed()) {
+        Chest_Llave_Dungeon_Lvl_2.destroy(effects.spray, 500)
+        Chest_Llave_Dungeon_Lvl_2 = sprites.create(img`
+            . b b b b b b b b b b b b b b . 
+            b e 4 4 4 4 4 4 4 4 4 4 4 4 4 b 
+            b e 4 4 4 4 4 4 4 4 4 4 4 4 e b 
+            b e e 4 4 4 4 4 4 4 4 4 4 e e b 
+            b b b b b b b d d b b b b b b b 
+            . b b b b b b c c b b b b b b . 
+            b c c c c c b c c b c c c c c b 
+            b c c c c c c b b c c c c c c b 
+            b c c c c c c c c c c c c c c b 
+            b c c c c c c c c c c c c c c b 
+            b b b b b b b b b b b b b b b b 
+            b e e e e e e e e e e e e e e b 
+            b e e e e e e e e e e e e e e b 
+            b c e e e e e e e e e e e e c b 
+            b b b b b b b b b b b b b b b b 
+            . b b . . . . . . . . . . b b . 
+            `, SpriteKind.Chest)
+        Chest_Llave_Dungeon_Lvl_2.setPosition(760, 10)
+        Chest_Llave_Dungeon_Lvl_2.setKind(SpriteKind.Complete)
+        Llave_Chest_Sprite = sprites.create(img`
+            . . . . . . . . . . . . . . . . . 
+            . . . . . f f f f f f f . . . . . 
+            . . . f f f f 5 5 5 f f f f . . . 
+            . . f f f f 5 5 f 5 5 f f f f . . 
+            . . f f f 5 5 5 f 5 5 5 f f f . . 
+            . f f f f 5 5 f f f 5 5 f f f f . 
+            . f f f f 5 5 5 f 5 5 5 f f f f . 
+            . f f f f f 5 5 5 5 5 f f f f f . 
+            . f f f f f f 5 5 5 f f f f f f . 
+            . f f f f f f 5 5 5 f f f f f f . 
+            . f f f f f f 5 5 5 f f f f f f . 
+            . f f f f f f 5 5 5 5 f f f f f . 
+            . . f f f f f 5 5 5 f f f f f . . 
+            . . f f f f f 5 5 5 5 f f f f . . 
+            . . . f f f f 5 5 5 f f f f . . . 
+            . . . . . f f f f f f f . . . . . 
+            . . . . . . . . . . . . . . . . . 
+            `, SpriteKind.Item)
+        statusbar.positionDirection(CollisionDirection.Top)
+        statusbar = statusbars.create(20, 4, StatusBarKind.Item)
+    }
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.NPC1, function (sprite, otherSprite) {
     DialogueMode = true
@@ -2152,6 +2215,25 @@ function CreateLevel () {
         pause(1000)
         Musica_1 = true
     } else if (level == 2) {
+        Chest_Llave_Dungeon_Lvl_2 = sprites.create(img`
+            . . b b b b b b b b b b b b . . 
+            . b e 4 4 4 4 4 4 4 4 4 4 e b . 
+            b e 4 4 4 4 4 4 4 4 4 4 4 4 e b 
+            b e 4 4 4 4 4 4 4 4 4 4 4 4 e b 
+            b e 4 4 4 4 4 4 4 4 4 4 4 4 e b 
+            b e e 4 4 4 4 4 4 4 4 4 4 e e b 
+            b e e e e e e e e e e e e e e b 
+            b e e e e e e e e e e e e e e b 
+            b b b b b b b d d b b b b b b b 
+            c b b b b b b c c b b b b b b c 
+            c c c c c c b c c b c c c c c c 
+            b e e e e e c b b c e e e e e b 
+            b e e e e e e e e e e e e e e b 
+            b c e e e e e e e e e e e e c b 
+            b b b b b b b b b b b b b b b b 
+            . b b . . . . . . . . . . b b . 
+            `, SpriteKind.Chest)
+        Chest_Llave_Dungeon_Lvl_2.setPosition(760, 10)
         Musica_1 = false
         NPCMama.destroy()
         tiles.setCurrentTilemap(tilemap`El Pirai`)
@@ -2468,15 +2550,6 @@ function CreateLevel () {
     }
     tiles.placeOnRandomTile(CamKun, sprites.dungeon.collectibleInsignia)
 }
-/**
- * 0-Up
- * 
- * 1-Right
- * 
- * 2-Down
- * 
- * 3-Left
- */
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
     CamKun,
@@ -2744,6 +2817,9 @@ let Vendedor_Derecha_1: Sprite = null
 let Casa: Sprite = null
 let Sofa: Sprite = null
 let NPCMama: Sprite = null
+let statusbar: StatusBarSprite = null
+let Llave_Chest_Sprite: Sprite = null
+let Chest_Llave_Dungeon_Lvl_2: Sprite = null
 let PRUEBA_RESPUESTA_SONSO = ""
 let LVL2_Gate_Keeper_SONSO: Sprite = null
 let Scene_1_Papa_Bien: Sprite = null
@@ -2751,6 +2827,7 @@ let Scene_1_Auto: Sprite = null
 let Scene_1_Corazon: Sprite = null
 let Scene_1_Cambita_Bien: Sprite = null
 let Scene_1_CamCun: Sprite = null
+let myMinimap: tiles.TileMapData = null
 let Quinto: Sprite = null
 let Random_Gramos_Queso_Menonita = 0
 let DialogueMode = false
@@ -2762,7 +2839,7 @@ let Machetazo = false
 Machetazo = false
 Musica_1 = false
 info.setLife(3)
-let SALTEAR_INTRO = false
+let SALTEAR_INTRO = true
 if (SALTEAR_INTRO) {
     clearLevel()
 } else {
@@ -2821,15 +2898,15 @@ forever(function () {
     }
 })
 forever(function () {
-    if (info.life() > 5) {
-        info.setLife(5)
+    scene.cameraFollowSprite(CamKun)
+    if (DialogueMode == false) {
+        controller.moveSprite(CamKun, 100, 100)
+    } else if (DialogueMode == true) {
+        controller.moveSprite(CamKun, 0, 0)
     }
 })
 forever(function () {
-    scene.cameraFollowSprite(CamKun)
-    if (DialogueMode == false) {
-        controller.moveSprite(CamKun, 40, 40)
-    } else if (DialogueMode == true) {
-        controller.moveSprite(CamKun, 0, 0)
+    if (info.life() > 5) {
+        info.setLife(5)
     }
 })

@@ -111,6 +111,52 @@ f f e b b e f 9 9 9 9 9 9 9 1 .
 . . . c e e 1 1 1 1 1 f . . . . 
 . . . . f f f f f f f . . . . . 
 `;
+            case "image5":
+            case "bridge":return img`
+.eeee..............eeee.
+eeddee............eeddee
+edbbde............edbbde
+edbbdeeeeeeeeeeeeeedbbde
+feddeebbbbbbbbbbbbfeddee
+feeeefbbbbbbbbbbbbfeeeef
+feeeefeebbbbbbbbeefeeeef
+eeddeffeeeeeeeeeeffeddee
+edbbdeffeeeeeeeeffedbbde
+edbbdebbbbbbbbbbbbedbbde
+feddeebbbbbbbbbbbbfeddee
+feeeefeebbbbbbbbeefeeeef
+feeeeffeeeeeeeeeeffeeeef
+eeddeeffeeeeeeeeffeeddee
+edbbdebbbbbbbbbbbbedbbde
+edbbdebbbbbbbbbbbbedbbde
+feddeeeebbbbbbbbeefeddee
+feeeeffeeeeeeeeeeffeeeef
+feeeefffeeeeeeeefffeeeef
+eeddeebbbbbbbbbbbbeeddee
+edbbdebbbbbbbbbbbbedbbde
+edbbdeeebbbbbbbbeeedbbde
+feddeefeeeeeeeeeeffeddee
+feeeefffeeeeeeeefffeeeef
+feeeefbbbbbbbbbbbbfeeeef
+eeddeebbbbbbbbbbbbeeddee
+edbbdeeebbbbbbbbeeedbbde
+edbbdefeeeeeeeeeefedbbde
+feddeeffeeeeeeeefffeddee
+feeeefbbbbbbbbbbbbfeeeef
+feeeefbbbbbbbbbbbbfeeeef
+eeddeeeebbbbbbbbeeeeddee
+edbbdefeeeeeeeeeefedbbde
+edbbdeffeeeeeeeeffedbbde
+feddeebbbbbbbbbbbbfeddee
+feeeefbbbbbbbbbbbbfeeeef
+fbeeefeebbbbbbbbeefbeeef
+fbbffffeeeeeeeeeeffbbfff
+febbbefffffffffffffebbbe
+feefff666666666666feefff
+feeeef666666666666feeeef
+eeeeef............eeeeef
+.eeff..............eeff.
+`;
         }
         return null;
     })
