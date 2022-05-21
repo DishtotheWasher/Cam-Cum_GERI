@@ -12,6 +12,7 @@ namespace SpriteKind {
     export const River = SpriteKind.create()
     export const WALL_SHOOTER = SpriteKind.create()
     export const PERSONAJE_INTRO = SpriteKind.create()
+    export const Lvl_2_Gate_Keeper_SONSO = SpriteKind.create()
 }
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
@@ -93,14 +94,14 @@ scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.doorOpenSouth, function (
     clearLevel()
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.NPC, function (sprite, otherSprite) {
-    if (CamKun.overlapsWith(Vendedor_Derecha_1) && level == 2) {
-        if (CamKun.overlapsWith(Vendedor_Derecha_1)) {
+    if (CamKun.overlapsWith(Vendedor_Derecha_2) && level == 2) {
+        if (CamKun.overlapsWith(Vendedor_Derecha_2)) {
             DialogueMode = true
             game.showLongText("Hola pelau... no le vayaj a contar a nadie, pero mi receta secreta para el sonso son los siguientes gramos de queso menonita ", DialogLayout.Bottom)
             Random_Gramos_Queso_Menonita = randint(20, 50)
-            story.spriteSayText(Vendedor_Derecha_1, convertToText(Random_Gramos_Queso_Menonita))
+            story.spriteSayText(Vendedor_Derecha_2, convertToText(Random_Gramos_Queso_Menonita))
             DialogueMode = false
-            Vendedor_Derecha_1.setKind(SpriteKind.Complete)
+            Vendedor_Derecha_2.setKind(SpriteKind.Complete)
         }
     }
 })
@@ -1708,8 +1709,8 @@ function INTRO_CamKun () {
     story.spriteMoveToLocation(Scene_1_CamCun, 64, 103, 5)
     pause(2000)
     music.setVolume(20)
-    music.playMelody("A G F F E D C - ", 120)
-    music.playMelody("A G F F E D C C ", 120)
+    music.playMelody("A G F - E D C - ", 120)
+    music.playMelody("A G F - E D C - ", 120)
     color.startFade(color.originalPalette, color.Black, 3000)
     effects.blizzard.endScreenEffect()
     pause(1300)
@@ -1721,6 +1722,26 @@ function INTRO_CamKun () {
     DialogueMode = false
     clearLevel()
 }
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Lvl_2_Gate_Keeper_SONSO, function (sprite, otherSprite) {
+    if (CamKun.overlapsWith(LVL2_Gate_Keeper_SONSO) && level == 2) {
+        if (CamKun.overlapsWith(LVL2_Gate_Keeper_SONSO)) {
+            DialogueMode = true
+            game.showLongText("Si querej pasar, me vaj a tener que dar la receta del mejor sonso del Piraí", DialogLayout.Bottom)
+            game.showLongText("¿Cuantoj gramo' de queso menonita lleva el mejor sonso del piraí?", DialogLayout.Bottom)
+            PRUEBA_RESPUESTA_SONSO = game.askForString(true)
+            if (PRUEBA_RESPUESTA_SONSO == convertToText(Random_Gramos_Queso_Menonita)) {
+                game.showLongText("hmmm...Ya choco, voy a probar con eso, si no sirve, te voy a sacar la puta, podej pasar..", DialogLayout.Bottom)
+            } else {
+                game.showLongText("A mi no me la vaj a charlar, no volvaj por aca, cunumi e mierda", DialogLayout.Bottom)
+                scene.cameraShake(3, 1000)
+                info.changeLifeBy(-1)
+                music.smallCrash.play()
+            }
+            DialogueMode = false
+            pause(3000)
+        }
+    }
+})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     Machetazo = true
     music.knock.play()
@@ -2127,8 +2148,8 @@ function CreateLevel () {
         100,
         true
         )
-        tiles.placeOnRandomTile(Quinto, assets.tile`myTile1`)
-        pause(500)
+        tiles.placeOnRandomTile(Quinto, assets.tile`myTile21`)
+        pause(1000)
         Musica_1 = true
     } else if (level == 2) {
         Musica_1 = false
@@ -2185,6 +2206,34 @@ function CreateLevel () {
             .....64eee444c66f4e44e44e44e44ee66c444eee46.....
             ......6ccc666c66e4e44e44e44e44ee66c666ccc6......
             `, SpriteKind.Building)
+        Casa.setPosition(24, 8)
+        LVL2_Gate_Keeper_SONSO = sprites.create(img`
+            ........ccc.............
+            ........cccccccc........
+            .....cc..cc77777cc......
+            .....cccc777777777c.....
+            .....ccb77777777777c....
+            ...cc.b7777bcc777777c...
+            ...ccb77777777c77d77c...
+            ....cb7777dd77777777c...
+            .....7777dd7777d7777c...
+            ..cc.777dd777777dbbbc...
+            ..ccc77ddd777777d777c...
+            ...ccd7dbdd7777d777c....
+            ....bdddb777bbbbbccc....
+            ..cccdddb777cbbbbbbbc...
+            ...ccddddb777cbbbbbbbc..
+            ....cdddddb777cbbbbbbc..
+            ...ccddddddb77cbbbbbbcc.
+            ...cbddddd77bcbbbbbbbcc.
+            ..cbdddddd7777bbbbbbbc..
+            .cddddddbdd777bbbbbbc...
+            cddddddbbbdd77cbbccc....
+            ccccccbbcbddddccdddcc...
+            ......cccdd777dcccccc...
+            ........cccccccc........
+            `, SpriteKind.Lvl_2_Gate_Keeper_SONSO)
+        LVL2_Gate_Keeper_SONSO.setPosition(552, 628)
         Vendedor_Derecha_1 = sprites.create(img`
             eeeeeeeeeeeeeeeeeeee
             eeeeeeeeeeeeeeeeeeee
@@ -2401,11 +2450,15 @@ function CreateLevel () {
                 `, SpriteKind.Food)
             tiles.placeOnRandomTile(Comida, assets.tile`tilePath5`)
         }
-        Casa.setPosition(26, 12)
         for (let index = 0; index < 6; index++) {
             Vibora = sprites.create(assets.image`Vibora`, SpriteKind.Enemy)
             Vibora.follow(CamKun, 20)
             tiles.placeOnRandomTile(Vibora, sprites.castle.tileGrass3)
+        }
+        for (let index = 0; index < 10; index++) {
+            Vibora = sprites.create(assets.image`Vibora`, SpriteKind.Enemy)
+            Vibora.follow(CamKun, 25)
+            tiles.placeOnRandomTile(Vibora, assets.tile`tilePath0`)
         }
     } else if (level == 3) {
         NPCMama.destroy()
@@ -2687,10 +2740,12 @@ let Vendedor_Izquierda_3: Sprite = null
 let Vendedor_Izquierda_2: Sprite = null
 let Vendedor_Izquierda_1: Sprite = null
 let Vendedor_Derecha_3: Sprite = null
-let Vendedor_Derecha_2: Sprite = null
+let Vendedor_Derecha_1: Sprite = null
 let Casa: Sprite = null
 let Sofa: Sprite = null
 let NPCMama: Sprite = null
+let PRUEBA_RESPUESTA_SONSO = ""
+let LVL2_Gate_Keeper_SONSO: Sprite = null
 let Scene_1_Papa_Bien: Sprite = null
 let Scene_1_Auto: Sprite = null
 let Scene_1_Corazon: Sprite = null
@@ -2700,16 +2755,14 @@ let Quinto: Sprite = null
 let Random_Gramos_Queso_Menonita = 0
 let DialogueMode = false
 let level = 0
-let Vendedor_Derecha_1: Sprite = null
+let Vendedor_Derecha_2: Sprite = null
 let CamKun: Sprite = null
 let Musica_1 = false
 let Machetazo = false
-let PRUEBA_RESPUESTA_SONSO = game.askForString(true)
 Machetazo = false
 Musica_1 = false
-let Respuesta_Correcta_Vendedor_Sonso_Izquierda = false
 info.setLife(3)
-let SALTEAR_INTRO = true
+let SALTEAR_INTRO = false
 if (SALTEAR_INTRO) {
     clearLevel()
 } else {
