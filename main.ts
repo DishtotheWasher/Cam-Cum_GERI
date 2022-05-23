@@ -793,6 +793,8 @@ function INTRO_CamKun () {
     100,
     true
     )
+    music.setVolume(255)
+    music.spooky.play()
     story.spriteMoveToLocation(Scene_1_Auto, 90, 94, 20)
     animation.stopAnimation(animation.AnimationTypes.All, Scene_1_Auto)
     Scene_1_Papa_Bien = sprites.create(img`
@@ -1252,7 +1254,6 @@ function INTRO_CamKun () {
     story.spriteMoveToLocation(Scene_1_Papa_Bien, 89, 106, 5)
     Scene_1_Papa_Bien.destroy()
     pause(2000)
-    music.setVolume(255)
     music.spooky.play()
     animation.runImageAnimation(
     Scene_1_Auto,
@@ -1732,13 +1733,13 @@ function INTRO_CamKun () {
     true
     )
     story.spriteMoveToLocation(Scene_1_CamCun, 64, 103, 5)
-    pause(2000)
+    pause(1000)
     music.setVolume(20)
     music.playMelody("A G F - E D C - ", 120)
     music.playMelody("A G F - E D C - ", 120)
     color.startFade(color.originalPalette, color.Black, 3000)
     effects.blizzard.endScreenEffect()
-    pause(1300)
+    pause(1000)
     story.cancelAllCutscenes()
     animation.stopAnimation(animation.AnimationTypes.All, Scene_1_CamCun)
     animation.stopAnimation(animation.AnimationTypes.All, Scene_1_Papa_Bien)
@@ -2093,6 +2094,7 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     )
 })
 function CreateLevel () {
+    info.setLife(3)
     CamKun = sprites.create(img`
         . . . . . . c c c . . . . . . . 
         . . . . . . c 5 b c . . . . . . 
@@ -2235,6 +2237,8 @@ function CreateLevel () {
         pause(1000)
         Musica_1 = true
     } else if (level == 2) {
+        music.stopAllSounds()
+        Musica_2_Viva_Santa_Cruz = true
         Chest_Llave_Dungeon_Lvl_2 = sprites.create(img`
             . . b b b b b b b b b b b b . . 
             . b e 4 4 4 4 4 4 4 4 4 4 e b . 
@@ -2961,17 +2965,58 @@ let DialogueMode = false
 let level = 0
 let Vendedor_Derecha_2: Sprite = null
 let CamKun: Sprite = null
+let Musica_2_Viva_Santa_Cruz = false
 let Musica_1 = false
 let Machetazo = false
 Machetazo = false
 Musica_1 = false
-info.setLife(3)
-let SALTEAR_INTRO = false
+Musica_2_Viva_Santa_Cruz = false
+let SALTEAR_INTRO = true
 if (SALTEAR_INTRO) {
     clearLevel()
 } else {
     INTRO_CamKun()
 }
+forever(function () {
+    for (let index = 0; index < 1; index++) {
+        pause(27000)
+        if (Musica_2_Viva_Santa_Cruz) {
+            music.playTone(440, music.beat(BeatFraction.Whole))
+            music.playTone(415, music.beat(BeatFraction.Whole))
+            music.playTone(440, music.beat(BeatFraction.Whole))
+            music.playTone(349, music.beat(BeatFraction.Whole))
+            music.playTone(294, music.beat(BeatFraction.Double))
+            music.rest(music.beat(BeatFraction.Whole))
+            music.playTone(294, music.beat(BeatFraction.Whole))
+            music.playTone(349, music.beat(BeatFraction.Whole))
+            music.playTone(440, music.beat(BeatFraction.Double))
+            music.rest(music.beat(BeatFraction.Half))
+            music.playTone(415, music.beat(BeatFraction.Half))
+            music.playTone(440, music.beat(BeatFraction.Half))
+            music.playTone(415, music.beat(BeatFraction.Half))
+            music.playTone(440, music.beat(BeatFraction.Half))
+            music.playTone(349, music.beat(BeatFraction.Half))
+            music.playTone(330, music.beat(BeatFraction.Double))
+            music.rest(music.beat(BeatFraction.Whole))
+            music.playTone(294, music.beat(BeatFraction.Whole))
+            music.playTone(277, music.beat(BeatFraction.Whole))
+            music.playTone(294, music.beat(BeatFraction.Whole))
+            music.playTone(277, music.beat(BeatFraction.Whole))
+            music.playTone(262, music.beat(BeatFraction.Double))
+            music.rest(music.beat(BeatFraction.Half))
+            music.playTone(330, music.beat(BeatFraction.Whole))
+            music.playTone(440, music.beat(BeatFraction.Whole))
+            music.playTone(415, music.beat(BeatFraction.Double))
+            music.playTone(440, music.beat(BeatFraction.Whole))
+            music.playTone(494, music.beat(BeatFraction.Whole))
+            music.playTone(349, music.beat(BeatFraction.Whole))
+            music.playTone(330, music.beat(BeatFraction.Whole))
+            music.playTone(294, music.beat(BeatFraction.Whole))
+            music.playTone(262, music.beat(BeatFraction.Double))
+        }
+    }
+    pause(120000)
+})
 forever(function () {
     if (Musica_1) {
         music.playTone(294, music.beat(BeatFraction.Half))
