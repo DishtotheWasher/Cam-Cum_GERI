@@ -15,10 +15,33 @@ namespace SpriteKind {
     export const Lvl_2_Gate_Keeper_SONSO = SpriteKind.create()
     export const Chest = SpriteKind.create()
     export const Item = SpriteKind.create()
+    export const NPC_Lvl_2_Vendedor_Derecha2 = SpriteKind.create()
+    export const NPC_Lvl_2_Vendedor_Derecha1 = SpriteKind.create()
+    export const NPC_Lvl_2_Vendedor_Derecha3 = SpriteKind.create()
+    export const NPC_Lvl_2_Vendedor_Izquierda1 = SpriteKind.create()
+    export const NPC_Lvl_2_Vendedor_Izquierda2 = SpriteKind.create()
+    export const NPC_Lvl_2_Vendedor_Izquierda3 = SpriteKind.create()
 }
 namespace StatusBarKind {
     export const Item = StatusBarKind.create()
 }
+sprites.onOverlap(SpriteKind.Player, SpriteKind.NPC_Lvl_2_Vendedor_Derecha2, function (sprite, otherSprite) {
+    if (CamKun.overlapsWith(Vendedor_Derecha_2) && level == 2) {
+        if (CamKun.overlapsWith(Vendedor_Derecha_2)) {
+            DialogueMode = true
+            game.showLongText("Hola pelau... no le vayaj a contar a nadie, pero mi receta secreta para el sonso son los siguientes gramos de queso menonita ", DialogLayout.Bottom)
+            Random_Gramos_Queso_Menonita = randint(20, 50)
+            story.spriteSayText(Vendedor_Derecha_2, convertToText(Random_Gramos_Queso_Menonita))
+            DialogueMode = false
+            Vendedor_Derecha_2.setKind(SpriteKind.Complete)
+            pause(60000)
+        }
+    }
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Item, function (sprite, otherSprite) {
+    music.beamUp.play()
+    Llave_Chest_Sprite.destroy(effects.halo, 1000)
+})
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
     CamKun,
@@ -98,18 +121,11 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.doorOpenSouth, function (sprite, location) {
     clearLevel()
 })
-sprites.onOverlap(SpriteKind.Player, SpriteKind.NPC, function (sprite, otherSprite) {
-    if (CamKun.overlapsWith(Vendedor_Derecha_2) && level == 2) {
-        if (CamKun.overlapsWith(Vendedor_Derecha_2)) {
-            DialogueMode = true
-            game.showLongText("Hola pelau... no le vayaj a contar a nadie, pero mi receta secreta para el sonso son los siguientes gramos de queso menonita ", DialogLayout.Bottom)
-            Random_Gramos_Queso_Menonita = randint(20, 50)
-            story.spriteSayText(Vendedor_Derecha_2, convertToText(Random_Gramos_Queso_Menonita))
-            DialogueMode = false
-            Vendedor_Derecha_2.setKind(SpriteKind.Complete)
-            pause(60000)
-        }
-    }
+sprites.onOverlap(SpriteKind.Player, SpriteKind.NPC_Lvl_2_Vendedor_Izquierda1, function (sprite, otherSprite) {
+    DialogueMode = true
+    game.showLongText("Tengo mejores precios que el camba de enfrente!!", DialogLayout.Bottom)
+    DialogueMode = false
+    pause(10000)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Coin, function (sprite, otherSprite) {
     info.changeScoreBy(1)
@@ -1956,26 +1972,24 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Chest, function (sprite, otherSp
         Chest_Llave_Dungeon_Lvl_2.setPosition(760, 10)
         Chest_Llave_Dungeon_Lvl_2.setKind(SpriteKind.Complete)
         Llave_Chest_Sprite = sprites.create(img`
-            . . . . . . . . . . . . . . . . . 
-            . . . . . f f f f f f f . . . . . 
-            . . . f f f f 5 5 5 f f f f . . . 
-            . . f f f f 5 5 f 5 5 f f f f . . 
-            . . f f f 5 5 5 f 5 5 5 f f f . . 
-            . f f f f 5 5 f f f 5 5 f f f f . 
-            . f f f f 5 5 5 f 5 5 5 f f f f . 
-            . f f f f f 5 5 5 5 5 f f f f f . 
-            . f f f f f f 5 5 5 f f f f f f . 
-            . f f f f f f 5 5 5 f f f f f f . 
-            . f f f f f f 5 5 5 f f f f f f . 
-            . f f f f f f 5 5 5 5 f f f f f . 
-            . . f f f f f 5 5 5 f f f f f . . 
-            . . f f f f f 5 5 5 5 f f f f . . 
-            . . . f f f f 5 5 5 f f f f . . . 
-            . . . . . f f f f f f f . . . . . 
-            . . . . . . . . . . . . . . . . . 
+            . . . 2 2 2 5 5 5 5 2 2 2 2 . . 
+            . . . 2 2 5 5 2 2 5 5 2 2 2 . . 
+            . . . 2 2 5 2 2 2 2 5 2 2 2 . . 
+            . . 2 2 2 5 5 2 2 5 5 2 2 2 2 . 
+            . . 2 2 2 2 5 5 5 5 2 2 2 2 2 . 
+            . 2 2 2 2 2 2 5 5 2 2 2 2 2 2 2 
+            . 2 2 2 2 2 2 5 5 2 2 2 2 2 2 2 
+            . 2 2 2 2 2 2 5 5 2 2 2 2 2 2 2 
+            . 2 2 2 2 2 2 5 5 5 5 2 2 2 2 2 
+            . 2 2 2 2 2 2 5 5 5 5 2 2 2 2 2 
+            . 2 2 2 2 2 2 5 5 2 2 2 2 2 2 . 
+            . . 2 2 2 2 2 5 5 5 5 2 2 2 2 . 
+            . . 2 2 2 2 2 5 5 5 5 2 2 2 2 . 
+            . . . 2 2 2 2 5 5 2 2 2 2 2 . . 
+            . . . 2 2 2 2 5 5 5 5 5 2 2 . . 
+            . . . 2 2 2 2 5 5 5 5 5 2 2 . . 
             `, SpriteKind.Item)
-        statusbar.positionDirection(CollisionDirection.Top)
-        statusbar = statusbars.create(20, 4, StatusBarKind.Item)
+        Llave_Chest_Sprite.setPosition(774, 10)
     }
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.NPC1, function (sprite, otherSprite) {
@@ -1995,6 +2009,12 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.NPC1, function (sprite, otherSpr
     pause(500)
     DialogueMode = false
     NPCMama.setKind(SpriteKind.Complete)
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.NPC_Lvl_2_Vendedor_Izquierda2, function (sprite, otherSprite) {
+    DialogueMode = true
+    game.showLongText("Colita en funda! 2 boliviano!!", DialogLayout.Bottom)
+    DialogueMode = false
+    pause(10000)
 })
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
@@ -2091,20 +2111,20 @@ function CreateLevel () {
         . . . . c b 1 1 1 1 b c . . . . 
         . . . . . f f f f f f . . . . . 
         `, SpriteKind.Player)
+    Quinto = sprites.create(img`
+        . . b b b b . . 
+        . b 5 5 5 5 b . 
+        b 5 d 3 3 d 5 b 
+        b 5 3 5 5 1 5 b 
+        c 5 3 5 5 1 d c 
+        c d d 1 1 d d c 
+        . f d d d d f . 
+        . . f f f f . . 
+        `, SpriteKind.Coin)
     if (level == 1) {
         color.startFade(color.Black, color.originalPalette, 3500)
         tiles.setCurrentTilemap(tilemap`level2`)
         scene.setBackgroundColor(0)
-        Quinto = sprites.create(img`
-            . . b b b b . . 
-            . b 5 5 5 5 b . 
-            b 5 d 3 3 d 5 b 
-            b 5 3 5 5 1 5 b 
-            c 5 3 5 5 1 d c 
-            c d d 1 1 d d c 
-            . f d d d d f . 
-            . . f f f f . . 
-            `, SpriteKind.Coin)
         Sofa = sprites.create(img`
             ..cccc.........
             .c7776c........
@@ -2290,29 +2310,29 @@ function CreateLevel () {
             `, SpriteKind.Building)
         Casa.setPosition(24, 8)
         LVL2_Gate_Keeper_SONSO = sprites.create(img`
-            ........ccc.............
+            .........c....c.........
             ........cccccccc........
-            .....cc..cc77777cc......
-            .....cccc777777777c.....
-            .....ccb77777777777c....
-            ...cc.b7777bcc777777c...
-            ...ccb77777777c77d77c...
-            ....cb7777dd77777777c...
-            .....7777dd7777d7777c...
-            ..cc.777dd777777dbbbc...
-            ..ccc77ddd777777d777c...
-            ...ccd7dbdd7777d777c....
-            ....bdddb777bbbbbccc....
-            ..cccdddb777cbbbbbbbc...
-            ...ccddddb777cbbbbbbbc..
-            ....cdddddb777cbbbbbbc..
-            ...ccddddddb77cbbbbbbcc.
-            ...cbddddd77bcbbbbbbbcc.
-            ..cbdddddd7777bbbbbbbc..
-            .cddddddbdd777bbbbbbc...
-            cddddddbbbdd77cbbccc....
-            ccccccbbcbddddccdddcc...
-            ......cccdd777dcccccc...
+            ....cc..ccc22222cc......
+            ....ccccc222222222c.....
+            .....ccb22222222222c....
+            ..ccccb2222bcc222222c...
+            ...ccb22222222c22d22c...
+            ....cb22224422222222c...
+            ....c2222442222d2222c...
+            .cccc22244222222dbbbc...
+            ..ccc22444222222d222c...
+            ...cc424b442222d222c....
+            ....c444b222bbbbbccc....
+            .cccc444b222cbbbbbbbc...
+            ..ccc4444b222cbbbbbbbc..
+            ...cc44444b222cbbbbbbc..
+            ....c444444b22cbbbbbbcc.
+            ...cb4444422bcbbbbbbbcc.
+            .ccb4444442222bbbbbbbc..
+            .c444444b44222bbbbbbc...
+            c444444bbb4422cbbccc....
+            ccccccbbcb4444cc222cc...
+            ......ccc442222cccccc...
             ........cccccccc........
             `, SpriteKind.Lvl_2_Gate_Keeper_SONSO)
         LVL2_Gate_Keeper_SONSO.setPosition(552, 628)
@@ -2347,7 +2367,7 @@ function CreateLevel () {
             bbbbbbbbbbbbbbbbbbbb
             bbbbbbbbbbbbbbbbbbbb
             bbbbbbbbbbbbbbbbbbbb
-            `, SpriteKind.NPC)
+            `, SpriteKind.NPC_Lvl_2_Vendedor_Derecha1)
         Vendedor_Derecha_1.setPosition(74, 488)
         Vendedor_Derecha_2 = sprites.create(img`
             eeeeeeeeeeeeeeeeeeee
@@ -2380,7 +2400,7 @@ function CreateLevel () {
             bbbbbbbbbbbbbbbbbbbb
             bbbbbbbbbbbbbbbbbbbb
             bbbbbbbbbbbbbbbbbbbb
-            `, SpriteKind.NPC)
+            `, SpriteKind.NPC_Lvl_2_Vendedor_Derecha2)
         Vendedor_Derecha_2.setPosition(74, 535)
         Vendedor_Derecha_3 = sprites.create(img`
             eeeeeeeeeeeeeeeeeeee
@@ -2413,7 +2433,7 @@ function CreateLevel () {
             bbbbbbbbbbbbbbbbbbbb
             bbbbbbbbbbbbbbbbbbbb
             bbbbbbbbbbbbbbbbbbbb
-            `, SpriteKind.NPC)
+            `, SpriteKind.NPC_Lvl_2_Vendedor_Derecha3)
         Vendedor_Derecha_3.setPosition(74, 582)
         Vendedor_Izquierda_1 = sprites.create(img`
             eeeeeeeeeeeeeeeeeeee
@@ -2446,7 +2466,7 @@ function CreateLevel () {
             bbbbbbbbbbbbbbbbbbbb
             bbbbbbbbbbbbbbbbbbbb
             bbbbbbbbbbbbbbbbbbbb
-            `, SpriteKind.NPC)
+            `, SpriteKind.NPC_Lvl_2_Vendedor_Izquierda1)
         Vendedor_Izquierda_1.setPosition(134, 488)
         Vendedor_Izquierda_2 = sprites.create(img`
             eeeeeeeeeeeeeeeeeeee
@@ -2479,7 +2499,7 @@ function CreateLevel () {
             bbbbbbbbbbbbbbbbbbbb
             bbbbbbbbbbbbbbbbbbbb
             bbbbbbbbbbbbbbbbbbbb
-            `, SpriteKind.NPC)
+            `, SpriteKind.NPC_Lvl_2_Vendedor_Izquierda2)
         Vendedor_Izquierda_2.setPosition(134, 535)
         Vendedor_Izquierda_3 = sprites.create(img`
             eeeeeeeeeeeeeeeeeeee
@@ -2512,7 +2532,7 @@ function CreateLevel () {
             bbbbbbbbbbbbbbbbbbbb
             bbbbbbbbbbbbbbbbbbbb
             bbbbbbbbbbbbbbbbbbbb
-            `, SpriteKind.NPC)
+            `, SpriteKind.NPC_Lvl_2_Vendedor_Izquierda3)
         Vendedor_Izquierda_3.setPosition(134, 582)
         for (let index = 0; index < 3; index++) {
             Comida = sprites.create(img`
@@ -2531,6 +2551,69 @@ function CreateLevel () {
                 e e . . . . . . . . . . . 
                 `, SpriteKind.Food)
             tiles.placeOnRandomTile(Comida, assets.tile`tilePath5`)
+        }
+        for (let index = 0; index < 20; index++) {
+            tiles.placeOnRandomTile(Quinto, assets.tile`tilePath1`)
+            animation.runImageAnimation(
+            Quinto,
+            [img`
+                . . b b b b . . 
+                . b 5 5 5 5 b . 
+                b 5 d 3 3 d 5 b 
+                b 5 3 5 5 1 5 b 
+                c 5 3 5 5 1 d c 
+                c d d 1 1 d d c 
+                . f d d d d f . 
+                . . f f f f . . 
+                `,img`
+                . . b b b . . . 
+                . b 5 5 5 b . . 
+                b 5 d 3 d 5 b . 
+                b 5 3 5 1 5 b . 
+                c 5 3 5 1 d c . 
+                c 5 d 1 d d c . 
+                . f d d d f . . 
+                . . f f f . . . 
+                `,img`
+                . . . b b . . . 
+                . . b 5 5 b . . 
+                . b 5 d 1 5 b . 
+                . b 5 3 1 5 b . 
+                . c 5 3 1 d c . 
+                . c 5 1 d d c . 
+                . . f d d f . . 
+                . . . f f . . . 
+                `,img`
+                . . . b b . . . 
+                . . b 5 5 b . . 
+                . . b 1 1 b . . 
+                . . b 5 5 b . . 
+                . . b d d b . . 
+                . . c d d c . . 
+                . . c 3 3 c . . 
+                . . . f f . . . 
+                `,img`
+                . . . b b . . . 
+                . . b 5 5 b . . 
+                . b 5 1 d 5 b . 
+                . b 5 1 3 5 b . 
+                . c d 1 3 5 c . 
+                . c d d 1 5 c . 
+                . . f d d f . . 
+                . . . f f . . . 
+                `,img`
+                . . . b b b . . 
+                . . b 5 5 5 b . 
+                . b 5 d 3 d 5 b 
+                . b 5 1 5 3 5 b 
+                . c d 1 5 3 5 c 
+                . c d d 1 d 5 c 
+                . . f d d d f . 
+                . . . f f f . . 
+                `],
+            100,
+            true
+            )
         }
         for (let index = 0; index < 6; index++) {
             Vibora = sprites.create(assets.image`Vibora`, SpriteKind.Enemy)
@@ -2626,6 +2709,12 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     true
     )
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.NPC_Lvl_2_Vendedor_Derecha1, function (sprite, otherSprite) {
+    DialogueMode = true
+    game.showLongText("Crema de marihuana y veneno de alacran, 2 por 10 bolivianos!!", DialogLayout.Bottom)
+    DialogueMode = false
+    pause(10000)
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
     otherSprite.destroy(effects.coolRadial, 500)
     info.changeLifeBy(1)
@@ -2655,6 +2744,33 @@ function clearLevel () {
         value.destroy()
     }
     for (let value of sprites.allOfKind(SpriteKind.WALL_SHOOTER)) {
+        value.destroy()
+    }
+    for (let value of sprites.allOfKind(SpriteKind.Coin)) {
+        value.destroy()
+    }
+    for (let value of sprites.allOfKind(SpriteKind.Lvl_2_Gate_Keeper_SONSO)) {
+        value.destroy()
+    }
+    for (let value of sprites.allOfKind(SpriteKind.Chest)) {
+        value.destroy()
+    }
+    for (let value of sprites.allOfKind(SpriteKind.NPC_Lvl_2_Vendedor_Derecha2)) {
+        value.destroy()
+    }
+    for (let value of sprites.allOfKind(SpriteKind.NPC_Lvl_2_Vendedor_Derecha1)) {
+        value.destroy()
+    }
+    for (let value of sprites.allOfKind(SpriteKind.NPC_Lvl_2_Vendedor_Derecha3)) {
+        value.destroy()
+    }
+    for (let value of sprites.allOfKind(SpriteKind.NPC_Lvl_2_Vendedor_Izquierda1)) {
+        value.destroy()
+    }
+    for (let value of sprites.allOfKind(SpriteKind.NPC_Lvl_2_Vendedor_Izquierda2)) {
+        value.destroy()
+    }
+    for (let value of sprites.allOfKind(SpriteKind.NPC_Lvl_2_Vendedor_Izquierda3)) {
         value.destroy()
     }
     scene.setBackgroundImage(img`
@@ -2782,6 +2898,12 @@ function clearLevel () {
     level += 1
     CreateLevel()
 }
+sprites.onOverlap(SpriteKind.Player, SpriteKind.NPC_Lvl_2_Vendedor_Izquierda3, function (sprite, otherSprite) {
+    DialogueMode = true
+    game.showLongText("Sonsito!!! 5 bolivianooooooo", DialogLayout.Bottom)
+    DialogueMode = false
+    pause(10000)
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     if (Machetazo == true) {
         otherSprite.destroy(effects.disintegrate, 700)
@@ -2793,6 +2915,12 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
         music.playMelody("C D D - - - - - ", 400)
         scene.cameraShake(3, 500)
     }
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.NPC_Lvl_2_Vendedor_Derecha3, function (sprite, otherSprite) {
+    DialogueMode = true
+    game.showLongText("Adridas !!   Mike !! venga, vea, compree!!", DialogLayout.Bottom)
+    DialogueMode = false
+    pause(10000)
 })
 /**
  * HISTORIA CAM-KUN
@@ -2817,8 +2945,6 @@ let Vendedor_Derecha_1: Sprite = null
 let Casa: Sprite = null
 let Sofa: Sprite = null
 let NPCMama: Sprite = null
-let statusbar: StatusBarSprite = null
-let Llave_Chest_Sprite: Sprite = null
 let Chest_Llave_Dungeon_Lvl_2: Sprite = null
 let PRUEBA_RESPUESTA_SONSO = ""
 let LVL2_Gate_Keeper_SONSO: Sprite = null
@@ -2829,6 +2955,7 @@ let Scene_1_Cambita_Bien: Sprite = null
 let Scene_1_CamCun: Sprite = null
 let myMinimap: tiles.TileMapData = null
 let Quinto: Sprite = null
+let Llave_Chest_Sprite: Sprite = null
 let Random_Gramos_Queso_Menonita = 0
 let DialogueMode = false
 let level = 0
@@ -2900,7 +3027,7 @@ forever(function () {
 forever(function () {
     scene.cameraFollowSprite(CamKun)
     if (DialogueMode == false) {
-        controller.moveSprite(CamKun, 100, 100)
+        controller.moveSprite(CamKun, 40, 40)
     } else if (DialogueMode == true) {
         controller.moveSprite(CamKun, 0, 0)
     }
